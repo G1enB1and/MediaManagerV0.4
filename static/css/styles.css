@@ -1,0 +1,581 @@
+
+/* styles.css */
+/* General styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    color: var(--aText);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+
+    /* general colors */
+    --white: #ffffff;
+    --offwhite1: #f9f9f9;
+    --offwhite2: #f1f1f1;
+    --lightgrey: #ccc;
+    --medlightgrey: #999;
+    --medgrey: #555;
+    --darkgrey: #303030;
+    --offblack1: #222222;
+    --offblack2: #101010;
+    --black: #000000;
+    --accent1: #007bff;
+    --accent2: #0000ff;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color: inherit; /* prevent links from changing color to default blue and purple */
+    text-decoration: none; /* remove underlines for links */
+}
+
+/* loading page with glass morphism effect */
+.loading {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 100px); /* accommodate for margin */
+    height: calc(100% - 100px); /* accommodate for margin */
+    margin: 50px;
+    z-index: 1000;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background-color: var(--aGlassMorphismBG) !important; /* Ensure background color is applied */
+    border-radius: 15px;
+    border-color: var(--aGlassMorphismBorder);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.loading-content {
+    text-align: center;
+    color: var(--aGlassMorphismText) !important; /* Ensure text color is applied */
+}
+
+.progress-bar-container {
+    width: 80%;
+    background: var(--aGlassMorphismBG); 
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px auto;
+}
+
+.progress-bar {
+    height: 20px;
+    width: 0;
+    background: var(--accent1); 
+    border-radius: 10px;
+}
+
+
+/* Header styles */
+.header {
+    height: 65px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: var(--aHeaderBG);
+    padding: 0 10px;
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+.logo {
+    height: 35px;
+    margin-right: 5px;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: bold;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin-right: 15px;
+}
+
+.fa-folder-tree { /* icon for folder tree in the header */
+    font-size: 22px;
+    margin-right: 15px;
+}
+
+.search-container {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Center the search container */
+    align-items: center;
+}
+
+.search-bar {
+    flex-basis: 50%; /* Set the base width to 50% of the container */
+    max-width: 500px; /* Optional: Set a maximum width */
+    min-width: 120px; /* Optional: Set a minimum width */
+    padding: 5px;
+}
+
+.filter-button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.gallery-button {
+    height: 25px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.settings-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.hamburger-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    /*margin-top: 65px; /* Offset for the header */
+}
+
+.main-content, .data-panel {
+    overflow-y: auto;
+    overflow-x: hidden;
+    resize: horizontal;
+    position: relative;
+}
+
+.main-content {
+    width: 60%; /* initial width of mainContent */
+    background-color: var(--aMainContentBG);
+    flex-grow: 1; /* Allow main content to grow */
+    display: flex;
+    flex-direction: column; /* Ensure column layout */
+    align-items: center;
+    justify-content: flex-start; /* Align content to the start */
+}
+
+.data-panel {
+    /* width was used to set initial width,
+    /* but it was fighting with other code to restrain width to 20% */
+    /* width: 20%; */  
+    background-color: var(--aDataPanelBG);
+}
+
+.dataPanelContent {
+    margin: 10px;
+    padding: 0px;
+}
+
+#existingTags {
+    width: calc(100% - 40px);
+    margin: 10px;
+    padding: 0px;
+}
+
+#newTag {
+    width: calc(100% - 40px);
+    margin: 10px;
+    padding: 0px;
+}
+
+#bulkTagEdit {
+    width: calc(100% - 40px);
+    margin: 10px;
+    padding: 0px;
+}
+
+#addTagButton {
+    width: calc(100% - 40px);
+    margin: 10px;
+    padding: 0px;
+}
+
+#applyTagsButton {
+    width: calc(100% - 40px);
+    margin: 10px;
+    padding: 0px;
+}
+
+#clearTagsButton {
+    width: calc(100% - 40px);
+    margin: 10px;
+    padding: 0px;
+}
+
+.resizer {
+    width: 5px;
+    background: var(--aResizer);
+    cursor: ew-resize;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+#resizer-filetree {
+    right: 0;
+}
+
+#resizer-datapanel {
+    left: 0;
+}
+
+/* Gallery styles */
+.gallery {
+    column-gap: 10px;
+    padding: 10px;
+    opacity: 0; /* Initially hide the gallery */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity changes */
+}
+
+.gallery-item {
+    break-inside: avoid;
+    margin-bottom: 10px;
+    background-color: var(--aGalleryPlaceholder);
+    position: relative;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.gallery-item img,
+.gallery-item video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 15px;
+    cursor: pointer;
+    opacity: 0; /* Initially hide images and videos */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity changes */
+}
+
+.placeholder {
+    width: 100%;
+    background-color: var(--aGalleryPlaceholder);
+    position: relative;
+}
+
+/* Responsive column counts */
+@media (min-width: 1500px) {
+    .gallery {
+        column-count: 5;
+    }
+}
+
+@media (max-width: 1499px) and (min-width: 1200px) {
+    .gallery {
+        column-count: 4;
+    }
+}
+
+@media (max-width: 1199px) and (min-width: 900px) {
+    .gallery {
+        column-count: 3;
+    }
+}
+
+@media (max-width: 899px) and (min-width: 600px) {
+    .gallery {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 599px) {
+    .gallery {
+        column-count: 1;
+    }
+}
+
+/* Slideshow styles */
+#mediaContainer {
+    height: 100%;
+}
+
+.slideshow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 20px);
+    overflow: hidden; /* Prevent scrolling */
+    position: relative;
+    margin: 10px;
+}
+
+.slideshow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.slideshow #slideshowImageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%; /* Ensure it fills the entire container */
+    position: relative; /* Ensure absolute positioned elements are relative to this container */
+    overflow: hidden; /* Prevent overflow */
+    margin: 0;
+    padding: 0;
+}
+
+.slideshow #slideshowImageContainer img,
+.slideshow #slideshowImageContainer video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: auto;
+}
+
+.slideshow #slideshowDisplayedImage,
+.slideshow #slideshowDisplayedVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure the image/video fits within the container */
+}
+
+.slideshow #slideshowDisplayedVideo {
+    display: none;
+}
+
+.slideshow #controlsContainer {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 2; /* Ensure controls stay on top of other content */
+}
+
+.slideshow #slideshowImageContainer:hover #controlsContainer,
+.slideshow #controlsContainer:hover {
+    opacity: 1;
+}
+
+.slideshow .mediaControls {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    border: none;
+    background-color: var(--aPreviousNextBG);
+    color: var(--aPreviousNextFG);
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slideshow #prevButton {
+    margin-left: 20px; /* 20px from the left */
+}
+
+.slideshow #nextButton {
+    margin-right: 20px; /* 20px from the right */
+}
+
+.slideshow #playPauseButton {
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    background-color: var(--aPlayPauseBG);
+    color: var(--aPlayPauseFG);
+    margin-left: 30px;
+}
+
+#playPauseButton .fa-play,
+#playPauseButton .fa-pause {
+    font-size: 24px;
+}
+
+#playPauseButton .fa-pause {
+    display: none;
+}
+
+
+/* Drawer styles */
+#drawer { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 10px 0px 10px 10px; /* Add padding to the drawer itself */
+    overflow: hidden;
+    background-color: var(--aDrawerBG);
+}
+
+#drawerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align items at the top */
+    margin: 0; /* Remove margins */
+    padding: 0; 
+    padding-left: 5px;
+    width: auto; /* Let the content define the width */
+    overflow: hidden;
+    background-color: var(--aDrawerBG);
+}
+
+#drawerContent a {
+    margin: 10px 0 0; /* Add vertical margin between items */
+    margin-left: 5px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#drawerContent a img {
+    margin-left: -5px;
+}
+
+/* File tree styles */
+.file-tree {
+    width: 20%;
+    max-width: 40%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    resize: horizontal;
+    position: relative;
+    background-color: var(--aFileTreeBG);
+    margin: 0px;
+    padding: 0px;
+}
+
+#leftPanel { 
+    /* flex-shrink: 0; */ /* not sure if I need this or not yet */
+    margin: 0px;
+    padding: 0px;
+}
+
+.scroller {
+    --scrollbar-color-thumb: var(--aScrollbarColorThumb);
+    --scrollbar-color-track: var(--aScrollbarColorTrack);
+    --scrollbar-width: thin;
+    --scrollbar-width-legacy: 0.5rem;
+}
+
+@supports (scrollbar-width: auto) {
+    .scroller {
+      scrollbar-color: var(--scrollbar-color-thumb) var(--scrollbar-color-track);
+      scrollbar-width: var(--scrollbar-width);
+    }
+}
+
+@supports selector(::-webkit-scrollbar) {
+    .scroller {
+      text-align: justify;
+    }
+    .scroller::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-color-thumb);
+    }
+    .scroller::-webkit-scrollbar-track {
+      background: var(--scrollbar-color-track);
+    }
+    .scroller::-webkit-scrollbar {
+      max-width: var(--scrollbar-width-legacy);
+      max-height: var(--scrollbar-width-legacy);
+    }
+}
+
+#leftPanelContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Use flex-start instead of left */
+    margin: 0;
+    padding: 0;
+}
+
+#rootDirectoryLinkContainer {
+    padding: 10px 10px 1px;
+    margin: 0;
+}
+
+#fileTreeContainer {
+    padding: 0px 10px 10px; /* Top, left+right, bottom */
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: calc(100% - 20px); /* Adjust for padding */
+}
+
+/* Hide bullets in the file tree */
+#fileTree {
+    list-style-type: none; /* Remove bullets */
+    padding-left: 0; /* Remove padding */
+    margin-top: 0;
+    align-items: flex-start; /* Use flex-start instead of left */
+}
+
+#fileTree li {
+    margin: 5px 0;
+    cursor: pointer;
+    position: relative;
+    padding-left: 20px; /* Add space for the toggle icon */
+    align-items: flex-start; /* Use flex-start instead of left */
+    white-space: nowrap; /* Prevent text from justifying */
+    text-align: left; /* Ensure text is left-aligned */
+}
+
+#fileTree li .toggle-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+#fileTree li ul {
+    margin-top: 0;
+    list-style-type: none; /* Remove bullets from sub-lists */
+    padding-left: 0; /* Remove padding */
+}
+
+#expandCollapseControlsContainer {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: space-between; /* Space out elements */
+    padding: 10px;
+    width: calc(100% - 25px);
+    font-weight: bold;
+    background-color: var(--aExplorerHeaderBG);
+}
+
+#expandCollapseControls {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 10px;
+}
+
+#expandCollapseControls i {
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--aText);
+    transition: color 0.3s;
+}
+
+#expandCollapseControls i:hover {
+    color: var(--accent1);
+}
+
+#settings {
+    margin: 10px;
+}
