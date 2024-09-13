@@ -5,52 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Interface</title>
     <link rel="stylesheet" href="static/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
-    <div class="top-bar">
-        <img src="static/images/logoIcon.png" alt="Logo" class="logo">
-        <div class="menu-bar">
-            <ul class="menu">
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropbtn">File</a>
-                    <div class="dropdown-content">
-                        <a href="#">Add Folder</a>
-                        <a href="#">Remove Folder</a>
-                        <a href="#">Exit</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropbtn">Edit</a>
-                    <div class="dropdown-content">
-                        <a href="#">Settings</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropbtn">View</a>
-                    <div class="dropdown-content">
-                        <a href="#">About</a>
-                        <a href="#" onclick="toggleLeftPanel()">Left Panel</a>
-                        <a href="#" onclick="toggleRightPanel()">Right Panel</a>
-                    </div>
-                </li>
-            </ul>
+    <div class="container">
+        <div class="top-bar">
+            <img src="static/images/logoIcon.png" alt="Logo" class="logo">
+            <div class="menu-bar">
+                <ul class="menu">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropbtn">File</a>
+                        <div class="dropdown-content">
+                            <a href="#">Add Folder</a>
+                            <a href="#">Remove Folder</a>
+                            <a href="#">Exit</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropbtn">Edit</a>
+                        <div class="dropdown-content">
+                            <a href="#">Settings</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropbtn">View</a>
+                        <div class="dropdown-content">
+                            <a href="#">About</a>
+                            <a href="#" onclick="toggleLeftPanel()">Left Panel</a>
+                            <a href="#" onclick="toggleRightPanel()">Right Panel</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <input type="text" class="search-bar" placeholder="Search...">
+            <div class="panel-toggles">
+                <button id="left-panel-toggle" onclick="toggleLeftPanel()">
+                    <img src="static/images/sidebar-regular-white.png" alt="Toggle Left Panel"> <!-- Default icon when on -->
+                </button>
+                <button id="right-panel-toggle" onclick="toggleRightPanel()">
+                    <img src="static/images/sidebar-flip-light-white.png" alt="Toggle Right Panel"> <!-- Default icon when off -->
+                </button>
+            </div>
         </div>
-        <input type="text" class="search-bar" placeholder="Search...">
-        <div class="panel-toggles">
-            <button id="left-panel-toggle" onclick="toggleLeftPanel()">
-                <img src="static/images/sidebar-regular-white.png" alt="Toggle Left Panel"> <!-- Default icon when on -->
-            </button>
-            <button id="right-panel-toggle" onclick="toggleRightPanel()">
-                <img src="static/images/sidebar-flip-light-white.png" alt="Toggle Right Panel"> <!-- Default icon when off -->
-            </button>
-            
-            
+        <div class="main-content">
+            <div id="left-panel" class="panel">Left Panel Content</div>
+            <div class="content-area">
+                <!-- Main body content goes here -->
+                Main Content Area
+            </div>
+            <div id="right-panel" class="panel">Right Panel Content</div>
         </div>
     </div>
-
-    <div id="left-panel" class="panel">Left Panel Content</div>
-    <div id="right-panel" class="panel">Right Panel Content</div>
 
     <script src="static/js/script.js"></script>
 </body>

@@ -1,25 +1,38 @@
 body, html {
+    height: 100%;
     margin: 0;
     padding: 0;
     background-color: #1e1e1e; /* Consistent dark mode background */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Screen-friendly sans-serif font */
     color: #d5d5d5;
-    display: flex;  /* Sets the body to use Flexbox */
-    flex-direction: row;  /* Align children (panels) in a row */
-    height: 100%;  /* Take full height of the viewport */
+    overflow-x: hidden;  /* Prevent horizontal scrolling */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .top-bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;  /* This spreads out the children elements */
-    background-color: #101010;  /* Darker tone for the bar */
-    padding: 2px 10px;
+    justify-content: space-between;
+    background-color: #101010;
+    padding: 0 10px;  /* Reduced padding */
+    height: 30px;  /* Fixed height for menu bar */
+    width: 100%;  /* Ensures it fits within the screen width */
+    box-sizing: border-box; /* Ensure padding doesn't cause overflow */
+}
+
+.logo {
+    height: 16px;  /* Adjust logo height */
+    margin-right: 5px;
 }
 
 .menu-bar {
     display: flex;
-    flex: 1;  /* Allows the menu bar to grow and take necessary space */
+    flex: 1;
 }
 
 .menu {
@@ -29,47 +42,23 @@ body, html {
     display: flex;
 }
 
-.search-bar {
-    flex: 0 1 300px;  /* Flex-grow, flex-shrink, flex-basis */
-    padding: 5px 10px;
-    margin: 0 20px;  /* Centering margin if needed */
-    background-color: #161616;
-    border: 1px solid #555;
-    color: #d5d5d5;
-    text-align: left;  /* Aligns text in the center */
-    border-radius: 4px;  /* Optional: Adds rounded corners */
-}
-
-.panel-toggles {
-    display: flex;
-    flex: 1;  /* Similar to menu-bar, allowing it to grow */
-    justify-content: flex-end;  /* Aligns the toggle buttons to the right */
-}
-
-.panel-toggles button {
-    /* Button styles */
-}
-
-.logo {
-    height: 16px;
-    margin-right: 5px;
-}
-
 .menu li {
     position: relative;
-    padding: 5px 10px;
+    padding: 0 8px;  /* Adjusted padding for compactness */
+    line-height: 20px; /* Vertically center text */
 }
 
 .menu a {
     display: block;
     color: #d5d5d5;
     text-decoration: none;
-    font-size: 13px; /* Slightly larger font size */
+    font-size: 13px;
+    line-height: 20px;  /* Ensure link text is vertically centered */
 }
 
 .menu a:hover, .menu a.dropbtn:focus {
-    background-color: #454545; /* Subtle hover effect */
-    border-radius: 4px; /* Rounded corners on hover */
+    background-color: #454545;
+    border-radius: 4px;
 }
 
 .dropdown-content {
@@ -80,16 +69,34 @@ body, html {
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
     border: 1px solid #333;
     z-index: 1000;
-    border-radius: 4px; /* Rounded corners for dropdown */
-    padding: 5px 0; /* Vertical padding for breathing room */
+    border-radius: 4px;
+    padding: 5px 0;
 }
 
 .dropdown-content a {
-    padding: 10px 15px; /* Increased spacing for legibility */
+    padding: 10px 15px;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.search-bar {
+    flex: 0 1 300px;
+    padding: 2px 5px;  /* Reduced padding for compactness */
+    margin: 0 20px;
+    background-color: #161616;
+    border: 1px solid #555;
+    color: #d5d5d5;
+    text-align: left;
+    border-radius: 4px;
+    height: 16px;  /* Make the search bar height smaller */
+}
+
+.panel-toggles {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
 }
 
 .panel-toggles button {
@@ -106,34 +113,32 @@ body, html {
 }
 
 .panel-toggles button img {
-    height: 16px;  /* Set the height to 16px */
-    width: auto;   /* Maintain the aspect ratio */
+    height: 16px;
+    width: auto;
+}
+
+.main-content {
+    display: flex;
+    flex-grow: 1;
 }
 
 .panel {
-    background-color: #262626;  /* Distinguishing color */
+    background-color: #262626;
     color: #d5d5d5;
     padding: 10px;
-    box-sizing: border-box;
     overflow: auto;
-    flex-grow: 1;  /* Allows the panel to grow and take up available space */
-    min-width: 250px;  /* Minimum width of each panel */
-    height: calc(100% - 26px);  /* Adjust height as necessary */
-    resize: horizontal;  /* Allow horizontal resizing */
+    width: 250px;
 }
 
 #left-panel {
-    resize: horizontal;
-    overflow: auto;
-    display: block; /* Left panel is visible by default */
-    width: 16%;
-    border: 1px solid #444;  /* Makes the resize area more obvious */
+    display: block;
 }
 
 #right-panel {
-    resize: horizontal;
-    overflow: auto;
-    display: none; /* right panel is initially hidden */
-    width: 16%;
-    border: 1px solid #444;  /* Makes the resize area more obvious */
+    display: none;
+}
+
+.content-area {
+    flex-grow: 1;
+    background-color: #1e1e1e;
 }
