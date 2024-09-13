@@ -9,5 +9,3 @@ If you have Stable Diffusion installed, you can send image to that in a single c
 If you have any image upscalers installed, you can add them as a one click link as well.
 You can use built in AI to autotag your images, or send images to external AI's like ChatGPT to be analyzed for the best tags to add, and add them with one click. 
 You can even setup facial recognition to autotag people.
-
-
