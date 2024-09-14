@@ -62,13 +62,23 @@ body, html {
 }
 
 .menu a.dropbtn:focus {
-    background-color: #3376cd;
+    background-color: #2f2f2f;
     border-radius: 4px;
 }
 
 /* Remove dropdown display on hover */
 .menu .dropdown:hover .dropdown-content {
     display: none; /* Disable hover effect */
+}
+
+.menu .dropdown {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.menu .dropdown a {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 /* Only show the dropdown content when the 'active' class is applied */
