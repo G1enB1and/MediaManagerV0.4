@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MediaManager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon.png">
     <link rel="stylesheet" href="static/css/styles.css">
 </head>
@@ -48,7 +49,32 @@
             </div>
         </div>
         <div class="main-content">
-            <div id="left-panel" class="panel">Left Panel Content</div>
+            <div id="left-panel-container" class = "left-panel-container">
+                <div id="left-panel" class="panel">
+                    <ul id="fileTree" class="file-tree">
+                        <li>
+                            <span class="folder-l-shape"></span><span class="folder-icon"><i class="fa-regular fa-folder"></i></span> Root
+                            <ul>
+                                <li>
+                                    <span class="folder-l-shape"></span><span class="folder-icon"><i class="fa-regular fa-folder"></i></span> Folder One
+                                    <ul>
+                                        <li><span class="file-l-shape"></span><i class="fa-regular fa-file"></i> file_one.txt</li>
+                                        <li><span class="file-l-shape"></span><i class="fa-regular fa-file"></i> file_two.txt</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <span class="folder-l-shape"></span><span class="folder-icon"><i class="fa-regular fa-folder"></i></span> Folder Two
+                                    <ul>
+                                        <li><span class="file-l-shape"></span><i class="fa-regular fa-file"></i> file_one.txt</li>
+                                        <li><span class="file-l-shape"></span><i class="fa-regular fa-file"></i> file_two.txt</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
             <div id="left-resizer" class="resizer"></div> <!-- New Resizer -->
             <div class="content-area">
                 Main Content Area

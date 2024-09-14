@@ -218,3 +218,77 @@ body, html {
     user-select: none;
     pointer-events: none;
 }
+
+/* -- File Tree -- */
+
+/* File tree container */
+ul.file-tree {
+    /*list-style-type: none;  /* Hide default bullets - no noticable effect */
+    padding-left: 0;
+    margin: 0;
+}
+
+/* File tree container */
+ul.file-tree {
+    /*list-style-type: none;  /* Hide default bullets - no noticable effect */
+    padding-left: 0;
+    margin: 0;
+}
+
+/* Styles for each folder and file */
+ul.file-tree li {
+    list-style-type: none; /* Hide bullets on each item - This has desired effect */
+    position: relative;
+    padding-left: 20px;  /* Ensure space for the L shape */
+}
+
+/* L-shape lines for folders and files */
+ul.file-tree .folder-l-shape::before,
+ul.file-tree .file-l-shape::before {
+    content: "";
+    border-bottom: 1px solid #d5d5d5;
+    border-left: 1px solid #d5d5d5;
+    height: 1.5rem;
+    width: 1rem;
+    display: inline-block;
+    margin-bottom: 0.3rem;
+    margin-left: -1rem;
+}
+
+/* Remove L-shape for the root folder */
+ul.file-tree li:first-child .folder-l-shape::before {
+    content: none; 
+}
+
+/* Folder icon */
+ul.file-tree li .folder-icon {
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+/* File icons */
+ul.file-tree li i.fa-file {
+    margin-right: 5px;
+}
+
+/* Expanded folder (subfolder) */
+ul.file-tree li.subfolder > ul,
+ul.file-tree li.file-item > ul {
+    display: block; /* Show all subfolders by default 
+}
+
+/* Additional styling to ensure good alignment */
+.file-tree li ul li {
+    padding-left: 1.5rem;
+}
+
+/* this is needed if tree is collapsed by default instead of expanded by default */
+/* Collapsible folder 
+.file-tree ul {
+    display: none;
+}
+
+/* Show subfolders when parent is expanded 
+.file-tree li.expanded > ul {
+    display: block;
+}

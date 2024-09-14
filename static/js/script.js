@@ -111,3 +111,99 @@ document.addEventListener('DOMContentLoaded', function() {
     makeResizable(document.getElementById('left-resizer'), 'left');
     makeResizable(document.getElementById('right-resizer'), 'right');
 });
+
+//File Tree
+// Function to populate the file tree
+function populateFileTree() {
+    const fileTreeContainer = document.getElementById('fileTree');
+
+    // Show a loading indicator while fetching data
+    fileTreeContainer.innerHTML = '<li>Loading...</li>';
+
+    // Fetch the file tree from the JSON file
+    fetch('/static/file_tree.json')
+        .then(response => response.json())
+        .then(data => {
+            // Clear the loading message
+            fileTreeContainer.innerHTML = '';
+
+            // Build the file tree starting from the root (Pictures folder)
+            buildFileTree(fileTreeContainer, [data], true);  // Pass root folder data as an array and mark as root
+        })
+        .catch(error => {
+            console.error('Error fetching file tree:', error);
+        });
+}
+
+// Function to build the file tree dynamically
+function buildFileTree(container, nodes, isRoot = false) {
+    nodes.forEach(node => {
+        const li = document.createElement('li');
+        const icon = document.createElement('i');
+
+        if (node.type === 'directory') {
+            icon.className = 'fa-regular fa-folder-open'; // Folder open icon for fully expanded state
+            li.appendChild(icon);
+            li.appendChild(document.createTextNode(` ${node.name}`));
+
+            const folderIcon = document.createElement('span');
+            folderIcon.className = 'folder-icon';
+            li.insertBefore(folderIcon, li.firstChild);
+
+            const subList = document.createElement('ul');
+            subList.style.display = 'block'; // Ensure all subfolders are expanded by default
+            buildFileTree(subList, node.children); // Recursive call for subfolders
+            li.appendChild(subList);
+
+            if (!isRoot) {
+                li.classList.add('subfolder'); // Add class to subfolders (but not root)
+            } else {
+                li.classList.add('root-folder'); // Add a specific class to the root folder
+            }
+
+            // Add data attribute to the li element to track state
+            li.setAttribute('data-expanded', 'true');  // Initially expanded
+        } else {
+            icon.className = 'fa-regular fa-file'; // File icon
+            li.appendChild(icon);
+            li.appendChild(document.createTextNode(` ${node.name}`));
+
+            // Mark files with a class to ensure the L-shape is applied to them as well
+            li.classList.add('file-item');
+        }
+
+        container.appendChild(li);
+    });
+}
+
+// Event delegation to handle folder icon clicks for expand/collapse
+document.addEventListener('DOMContentLoaded', function() {
+    const fileTreeContainer = document.getElementById('fileTree');
+
+    // Event delegation: Listen for clicks on folder icons within the file tree
+    fileTreeContainer.addEventListener('click', function(event) {
+        const clickedElement = event.target;
+
+        // Check if the clicked element is a folder icon (the i.fa-folder element)
+        if (clickedElement.classList.contains('fa-folder') || clickedElement.classList.contains('fa-folder-open')) {
+            const parentLi = clickedElement.closest('li');
+            const subList = parentLi.querySelector('ul');
+            const icon = parentLi.querySelector('i');
+            const isExpanded = parentLi.getAttribute('data-expanded') === 'true';
+
+            // Toggle the folder open/close state
+            if (isExpanded) {
+                subList.style.display = 'none';
+                icon.className = 'fa-regular fa-folder'; // Change to closed folder icon
+                parentLi.setAttribute('data-expanded', 'false');
+            } else {
+                subList.style.display = 'block';
+                icon.className = 'fa-regular fa-folder-open'; // Change to open folder icon
+                parentLi.setAttribute('data-expanded', 'true');
+            }
+        }
+    });
+
+    // Call the function to populate the file tree
+    populateFileTree();
+});
