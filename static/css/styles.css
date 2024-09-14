@@ -230,63 +230,64 @@ ul.file-tree {
 }
 
 ul.file-tree li {
-    list-style-type: none; /* Hide bullets */
+    list-style-type: none;
     position: relative;
-    padding-left: 0px; /* this was set to 20, but cuased a gap between lines and folders */
+    padding-left: 20px;
+    margin: 5px 0;
 }
 
 /* Vertical lines */
 ul.file-tree li::before {
     content: "";
     position: absolute;
+    top: -5px;
     left: 0;
-    top: 0;
     border-left: 1px solid #d5d5d5;
-    height: 100%;
+    height: calc(100% + 10px);
 }
 
 /* Horizontal lines */
 ul.file-tree li::after {
     content: "";
     position: absolute;
+    top: 12px;
     left: 0;
-    top: 50%;
-    border-top: 1px solid #d5d5d5;
     width: 20px;
+    border-top: 1px solid #d5d5d5;
 }
 
-/* Remove vertical line extension for last child */
+/* Remove vertical line for last child */
 ul.file-tree li:last-child::before {
-    height: 50%;
-}
-
-/* Remove vertical line for root folder */
-ul.file-tree > li:first-child::before {
-    display: none;
-}
-
-/* Folder and file icons */
-ul.file-tree li i {
-    margin-right: 5px;
-    position: relative;
-    z-index: 1; /* Ensure icon appears above lines */
+    height: 17px; /* Align with the horizontal line */
 }
 
 /* Indentation for nested items */
 ul.file-tree ul {
-    padding-left: 20px;
+    padding-left: 8px;
 }
 
-/* Adjust positioning for nested items */
-ul.file-tree ul li::before {
-    left: -20px;
+/* Folder and file icons */
+ul.file-tree li i {
+    margin-right: 0px;
+    position: relative;
+    z-index: 1;
 }
 
-ul.file-tree ul li::after {
-    left: -20px;
-    width: 20px;
+/* Style for the root folder */
+ul.file-tree > li.root-folder {
+    padding-left: 0;
 }
 
+ul.file-tree > li.root-folder::before,
+ul.file-tree > li.root-folder::after {
+    display: none;
+}
+
+/* Ensure subfolders don't have extra space */
+ul.file-tree li.subfolder > ul {
+    margin-top: 5px;
+    margin-bottom: -5px;
+}
 /* this is needed if tree is collapsed by default instead of expanded by default */
 /* Collapsible folder 
 .file-tree ul {
