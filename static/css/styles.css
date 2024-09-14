@@ -20,9 +20,10 @@ body, html {
     justify-content: space-between;
     background-color: #101010;
     padding: 0 10px;  /* Reduced padding */
-    height: 30px;  /* Fixed height for menu bar */
+    height: 35px;  /* Fixed height for menu bar */
     width: 100%;  /* Ensures it fits within the screen width */
     box-sizing: border-box; /* Ensure padding doesn't cause overflow */
+    border-bottom: 1px solid #333;
 }
 
 .logo {
@@ -124,6 +125,15 @@ body, html {
     height: 16px;  /* Make the search bar height smaller */
 }
 
+.search-bar:hover {
+    border: 1px solid #3376cd;
+}
+
+.search-bar:focus {
+    border: 1px solid #3376cd;
+    outline: none; /* Disable the default focus outline */
+}
+
 .panel-toggles {
     display: flex;
     flex: 1;
@@ -180,13 +190,18 @@ body, html {
 
 /* Resizer styles */
 .resizer {
-    width: 5px;
+    width: 1px;
     cursor: ew-resize;
-    background-color: #444;
+    background-color: #333;
     position: absolute;
     top: 0;
     bottom: 0;
     z-index: 1;
+}
+
+.resizer:hover {
+    width: 4px;
+    background-color: #3376cd;
 }
 
 #left-resizer {
