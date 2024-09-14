@@ -2,7 +2,11 @@ function toggleLeftPanel() {
     var panel = document.getElementById('left-panel');
     var icon = document.querySelector('#left-panel-toggle img');
     var resizer = document.getElementById('left-resizer');
-    if (panel.style.display === 'block') {
+
+    // Check actual computed style of the left panel
+    var panelDisplay = window.getComputedStyle(panel).display;
+
+    if (panelDisplay === 'block') {
         panel.style.display = 'none';
         resizer.style.display = 'none';
         icon.src = 'static/images/sidebar-light-white.png'; // Icon when panel is toggled off
@@ -17,7 +21,11 @@ function toggleRightPanel() {
     var panel = document.getElementById('right-panel');
     var icon = document.querySelector('#right-panel-toggle img');
     var resizer = document.getElementById('right-resizer');
-    if (panel.style.display === 'block') {
+
+    // Check actual computed style of the right panel
+    var panelDisplay = window.getComputedStyle(panel).display;
+
+    if (panelDisplay === 'block') {
         panel.style.display = 'none';
         resizer.style.display = 'none';
         icon.src = 'static/images/sidebar-flip-light-white.png'; // Icon when panel is toggled off
