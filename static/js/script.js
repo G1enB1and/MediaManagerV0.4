@@ -142,33 +142,26 @@ function buildFileTree(container, nodes, isRoot = false) {
         const icon = document.createElement('i');
 
         if (node.type === 'directory') {
-            icon.className = 'fa-regular fa-folder-open'; // Folder open icon for fully expanded state
+            icon.className = 'fa-regular fa-folder-open';
             li.appendChild(icon);
             li.appendChild(document.createTextNode(` ${node.name}`));
 
-            const folderIcon = document.createElement('span');
-            folderIcon.className = 'folder-icon';
-            li.insertBefore(folderIcon, li.firstChild);
-
             const subList = document.createElement('ul');
-            subList.style.display = 'block'; // Ensure all subfolders are expanded by default
-            buildFileTree(subList, node.children); // Recursive call for subfolders
+            subList.style.display = 'block';
+            buildFileTree(subList, node.children);
             li.appendChild(subList);
 
             if (!isRoot) {
-                li.classList.add('subfolder'); // Add class to subfolders (but not root)
+                li.classList.add('subfolder');
             } else {
-                li.classList.add('root-folder'); // Add a specific class to the root folder
+                li.classList.add('root-folder');
             }
 
-            // Add data attribute to the li element to track state
-            li.setAttribute('data-expanded', 'true');  // Initially expanded
+            li.setAttribute('data-expanded', 'true');
         } else {
-            icon.className = 'fa-regular fa-file'; // File icon
+            icon.className = 'fa-regular fa-file';
             li.appendChild(icon);
             li.appendChild(document.createTextNode(` ${node.name}`));
-
-            // Mark files with a class to ensure the L-shape is applied to them as well
             li.classList.add('file-item');
         }
 

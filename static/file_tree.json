@@ -2296,12 +2296,6 @@
                     "path": "Pictures\\Places\\Yilmas_spiritual_monastery_situated_in_an_arcane_magical_forest_efd8a9ae-f650-4dc9-9618-e3ab3e0fcd20.png"
                 }
             ]
-        },
-        {
-            "name": "Wallpaper",
-            "type": "directory",
-            "path": "Pictures\\Wallpaper",
-            "children": []
         }
     ]
 }

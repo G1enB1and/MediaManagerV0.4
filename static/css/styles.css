@@ -176,6 +176,7 @@ body, html {
 
 #left-panel {
     display: block;
+    height: 100%;
 }
 
 #right-panel {
@@ -221,65 +222,56 @@ body, html {
 
 /* -- File Tree -- */
 
-/* File tree container */
+/* File tree styles */
 ul.file-tree {
-    /*list-style-type: none;  /* Hide default bullets - no noticable effect */
+    list-style-type: none;
     padding-left: 0;
     margin: 0;
 }
 
-/* File tree container */
-ul.file-tree {
-    /*list-style-type: none;  /* Hide default bullets - no noticable effect */
-    padding-left: 0;
-    margin: 0;
-}
-
-/* Styles for each folder and file */
 ul.file-tree li {
-    list-style-type: none; /* Hide bullets on each item - This has desired effect */
+    list-style-type: none; /* needed to hide bullets */
     position: relative;
-    padding-left: 20px;  /* Ensure space for the L shape */
+    padding-left: 20px;
 }
 
-/* L-shape lines for folders and files */
-ul.file-tree .folder-l-shape::before,
-ul.file-tree .file-l-shape::before {
+/* vertical lines for folders and files */
+ul.file-tree li::before {
     content: "";
-    border-bottom: 1px solid #d5d5d5;
+    position: absolute;
+    left: 0;
+    top: 0;
     border-left: 1px solid #d5d5d5;
-    height: 1.5rem;
-    width: 1rem;
-    display: inline-block;
-    margin-bottom: 0.3rem;
-    margin-left: -1rem;
+    height: 100%;
 }
 
-/* Remove L-shape for the root folder */
-ul.file-tree li:first-child .folder-l-shape::before {
-    content: none; 
+ul.file-tree li:last-child::before {
+    height: 50%;
 }
 
-/* Folder icon */
-ul.file-tree li .folder-icon {
-    cursor: pointer;
+/* horizontal line for folders and files */
+ul.file-tree li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    border-top: 1px solid #d5d5d5;
+    width: 20px;
+}
+
+/* Remove vertical line for root folder */
+ul.file-tree > li:first-child::before {
+    display: none;
+}
+
+/* Folder and file icons */
+ul.file-tree li i {
     margin-right: 5px;
 }
 
-/* File icons */
-ul.file-tree li i.fa-file {
-    margin-right: 5px;
-}
-
-/* Expanded folder (subfolder) */
-ul.file-tree li.subfolder > ul,
-ul.file-tree li.file-item > ul {
-    display: block; /* Show all subfolders by default 
-}
-
-/* Additional styling to ensure good alignment */
-.file-tree li ul li {
-    padding-left: 1.5rem;
+/* Indentation for nested items */
+ul.file-tree ul {
+    padding-left: 20px;
 }
 
 /* this is needed if tree is collapsed by default instead of expanded by default */
