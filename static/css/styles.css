@@ -2,7 +2,7 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #1e1e1e; /* Consistent dark mode background */
+    background-color: #1f1f1f; /* Consistent dark mode background */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Screen-friendly sans-serif font */
     color: #d5d5d5;
     overflow-x: hidden;  /* Prevent horizontal scrolling */
@@ -56,15 +56,34 @@ body, html {
     line-height: 20px;  /* Ensure link text is vertically centered */
 }
 
-.menu a:hover, .menu a.dropbtn:focus {
-    background-color: #454545;
+.menu a:hover {
+    background-color: #2f2f2f; /* Background color on hover */
     border-radius: 4px;
 }
 
-.dropdown-content {
+.menu a.dropbtn:focus {
+    background-color: #3376cd;
+    border-radius: 4px;
+}
+
+/* Remove dropdown display on hover */
+.menu .dropdown:hover .dropdown-content {
+    display: none; /* Disable hover effect */
+}
+
+/* Only show the dropdown content when the 'active' class is applied */
+.menu .dropdown-content {
     display: none;
+}
+
+.menu .dropdown.active .dropdown-content {
+    display: block;
+}
+
+/* Dropdown content styles */
+.dropdown-content {
     position: absolute;
-    background-color: #252526;
+    background-color: #1f1f1f;
     min-width: 160px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
     border: 1px solid #333;
@@ -75,10 +94,12 @@ body, html {
 
 .dropdown-content a {
     padding: 10px 15px;
+    margin: 5px;
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
+/* Dropdown content hover effect */
+.dropdown-content a:hover {
+    background-color: #3376cd;
 }
 
 .search-bar {
@@ -124,7 +145,7 @@ body, html {
 }
 
 .panel {
-    background-color: #262626;
+    background-color: #181818;
     color: #d5d5d5;
     padding: 10px;
     overflow: auto;

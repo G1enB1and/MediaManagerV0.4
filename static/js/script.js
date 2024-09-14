@@ -66,3 +66,40 @@ document.addEventListener('DOMContentLoaded', function() {
     makeResizable(document.getElementById('left-resizer'), 'left');
     makeResizable(document.getElementById('right-resizer'), 'right');
 });
+
+// Function to toggle the dropdown visibility
+function toggleDropdown(event) {
+    event.stopPropagation();  // Prevent the click event from propagating to the document
+
+    const dropdown = event.currentTarget.parentElement;
+    
+    // Close any open dropdowns
+    document.querySelectorAll('.dropdown').forEach(function(item) {
+        if (item !== dropdown) {
+            item.classList.remove('active');
+        }
+    });
+
+    // Toggle the current dropdown
+    dropdown.classList.toggle('active');
+}
+
+// Close the dropdowns if clicking outside
+function closeDropdowns(event) {
+    document.querySelectorAll('.dropdown').forEach(function(item) {
+        item.classList.remove('active');
+    });
+}
+
+// Attach the toggle function to the dropdown buttons
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.dropbtn').forEach(function(btn) {
+        btn.addEventListener('click', toggleDropdown);
+    });
+
+    // Close dropdowns if clicking outside
+    document.addEventListener('click', closeDropdowns);
+
+    makeResizable(document.getElementById('left-resizer'), 'left');
+    makeResizable(document.getElementById('right-resizer'), 'right');
+});
