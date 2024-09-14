@@ -230,12 +230,12 @@ ul.file-tree {
 }
 
 ul.file-tree li {
-    list-style-type: none; /* needed to hide bullets */
+    list-style-type: none; /* Hide bullets */
     position: relative;
-    padding-left: 20px;
+    padding-left: 0px; /* this was set to 20, but cuased a gap between lines and folders */
 }
 
-/* vertical lines for folders and files */
+/* Vertical lines */
 ul.file-tree li::before {
     content: "";
     position: absolute;
@@ -245,11 +245,7 @@ ul.file-tree li::before {
     height: 100%;
 }
 
-ul.file-tree li:last-child::before {
-    height: 50%;
-}
-
-/* horizontal line for folders and files */
+/* Horizontal lines */
 ul.file-tree li::after {
     content: "";
     position: absolute;
@@ -257,6 +253,11 @@ ul.file-tree li::after {
     top: 50%;
     border-top: 1px solid #d5d5d5;
     width: 20px;
+}
+
+/* Remove vertical line extension for last child */
+ul.file-tree li:last-child::before {
+    height: 50%;
 }
 
 /* Remove vertical line for root folder */
@@ -267,11 +268,23 @@ ul.file-tree > li:first-child::before {
 /* Folder and file icons */
 ul.file-tree li i {
     margin-right: 5px;
+    position: relative;
+    z-index: 1; /* Ensure icon appears above lines */
 }
 
 /* Indentation for nested items */
 ul.file-tree ul {
     padding-left: 20px;
+}
+
+/* Adjust positioning for nested items */
+ul.file-tree ul li::before {
+    left: -20px;
+}
+
+ul.file-tree ul li::after {
+    left: -20px;
+    width: 20px;
 }
 
 /* this is needed if tree is collapsed by default instead of expanded by default */
