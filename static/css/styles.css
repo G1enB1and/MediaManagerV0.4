@@ -120,6 +120,7 @@ body, html {
 .main-content {
     display: flex;
     flex-grow: 1;
+    position: relative;
 }
 
 .panel {
@@ -128,6 +129,8 @@ body, html {
     padding: 10px;
     overflow: auto;
     width: 250px;
+    box-sizing: border-box; /* Include padding in width calculations */
+    transition: width 0.2s ease; /* Smooth transition when resized */
 }
 
 #left-panel {
@@ -141,4 +144,31 @@ body, html {
 .content-area {
     flex-grow: 1;
     background-color: #1e1e1e;
+    padding: 10px;
+}
+
+/* Resizer styles */
+.resizer {
+    width: 5px;
+    cursor: ew-resize;
+    background-color: #444;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+#left-resizer {
+    left: 250px; /* Initially placed after the left panel */
+}
+
+#right-resizer {
+    right: 250px; /* Initially placed before the right panel */
+    display: none;
+}
+
+/* Modify panel width dynamically during resize */
+.is-resizing .panel {
+    user-select: none;
+    pointer-events: none;
 }
