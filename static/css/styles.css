@@ -309,13 +309,28 @@ ul.file-tree > li.root-folder::after {
     display: none;
 }
 
-/* this is needed if tree is collapsed by default instead of expanded by default */
-/* Collapsible folder 
-.file-tree ul {
-    display: none;
+/* Style for the scrollbar track and thumb */
+::-webkit-scrollbar {
+    width: 8px;  /* Width of the scrollbar */
+    height: 8px; /* Height of the scrollbar (for horizontal scrollbars) */
 }
 
-/* Show subfolders when parent is expanded 
-.file-tree li.expanded > ul {
-    display: block;
+::-webkit-scrollbar-track {
+    background-color: #2f2f2f;  /* Dark background for the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #555555;  /* Darker thumb color */
+    border-radius: 4px;         /* Rounded scrollbar thumb */
+    border: 1px solid #333333;  /* Slight border to match the dark theme */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #777777;  /* Lighter shade on hover */
+}
+
+/* Scrollbar width (for Firefox) */
+.scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: #555555 #2f2f2f; /* thumb color, track color */
 }
