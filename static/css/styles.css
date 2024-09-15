@@ -254,7 +254,6 @@ ul.file-tree li {
     list-style-type: none; /* don't delete this line! */
     position: relative;
     padding-left: 20px;
-    margin: 5px 0;
 }
 
 /* Ensures subfolders also follow the same behavior */
@@ -308,18 +307,6 @@ ul.file-tree > li.root-folder {
 ul.file-tree > li.root-folder::before,
 ul.file-tree > li.root-folder::after {
     display: none;
-}
-
-/* Ensure subfolders don't have extra space */
-ul.file-tree li.subfolder > ul {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-/* Target file-item inside a subfolder */
-.subfolder > ul > li.file-item {
-    margin-top: 0;
-    margin-bottom: 0;
 }
 
 /* this is needed if tree is collapsed by default instead of expanded by default */

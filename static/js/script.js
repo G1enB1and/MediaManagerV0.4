@@ -128,7 +128,7 @@ function populateFileTree() {
             fileTreeContainer.innerHTML = '';
 
             // Build the file tree starting from the root (Pictures folder)
-            buildFileTree(fileTreeContainer, [data], true);  // Pass root folder data as an array and mark as root
+            buildFileTree(fileTreeContainer, [data], 0, true);  // Pass root folder data as an array and mark as root
         })
         .catch(error => {
             console.error('Error fetching file tree:', error);
@@ -136,7 +136,7 @@ function populateFileTree() {
 }
 
 // Function to build the file tree dynamically
-function buildFileTree(container, nodes, isRoot = false) {
+function buildFileTree(container, nodes, depth = 0, isRoot = false) {
     nodes.forEach(node => {
         const li = document.createElement('li');
         const icon = document.createElement('i');
@@ -147,17 +147,25 @@ function buildFileTree(container, nodes, isRoot = false) {
             li.appendChild(document.createTextNode(` ${node.name}`));
 
             const subList = document.createElement('ul');
-            subList.style.display = 'block';
-            buildFileTree(subList, node.children);
-            li.appendChild(subList);
 
-            if (!isRoot) {
-                li.classList.add('subfolder');
+            // Control folder expansion based on depth
+            if (depth < 1) {
+                subList.style.display = 'block'; // Expand root and first sublevel
+                li.setAttribute('data-expanded', 'true');
             } else {
-                li.classList.add('root-folder');
+                subList.style.display = 'none'; // Collapse anything deeper than the first sublevel
+                li.setAttribute('data-expanded', 'false');
             }
 
-            li.setAttribute('data-expanded', 'true');
+            // Recursively build the file tree for subfolders
+            buildFileTree(subList, node.children, depth + 1);
+            li.appendChild(subList);
+
+            if (isRoot) {
+                li.classList.add('root-folder');
+            } else {
+                li.classList.add('subfolder');
+            }
         } else {
             icon.className = 'fa-regular fa-file';
             li.appendChild(icon);
