@@ -142,7 +142,7 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
         const icon = document.createElement('i');
 
         if (node.type === 'directory') {
-            // Set the icon based on whether the folder is initially expanded or collapsed
+            // Folder icon logic
             if (depth < 1) {
                 icon.className = 'fa-regular fa-folder-open'; // Open folder icon for root and first sublevel
                 li.setAttribute('data-expanded', 'true');
@@ -173,7 +173,22 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
                 li.classList.add('subfolder');
             }
         } else {
-            icon.className = 'fa-regular fa-file';
+            // Determine the file type based on the extension
+            const fileName = node.name.toLowerCase();
+            if (fileName.endsWith('.mp4') || fileName.endsWith('.mov') || fileName.endsWith('.avi') || fileName.endsWith('.mkv')) {
+                // Use video icon for video files
+                icon.className = 'fa-regular fa-file-video';
+            } else if (fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.bmp')) {
+                // Use image icon for image files
+                icon.className = 'fa-regular fa-file-image';
+            } else if (fileName.endsWith('.gif')) {
+                // Use specific icon for GIF files
+                icon.className = 'fa-regular fa-file-image'; // Use the image icon, as there's no specific animated GIF icon
+            } else {
+                // Default file icon for other file types
+                icon.className = 'fa-regular fa-file';
+            }
+
             li.appendChild(icon);
             li.appendChild(document.createTextNode(` ${node.name}`));
             li.classList.add('file-item');
@@ -182,6 +197,7 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
         container.appendChild(li);
     });
 }
+
 
 
 // Event delegation to handle folder icon clicks for expand/collapse
