@@ -142,7 +142,15 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
         const icon = document.createElement('i');
 
         if (node.type === 'directory') {
-            icon.className = 'fa-regular fa-folder-open';
+            // Set the icon based on whether the folder is initially expanded or collapsed
+            if (depth < 1) {
+                icon.className = 'fa-regular fa-folder-open'; // Open folder icon for root and first sublevel
+                li.setAttribute('data-expanded', 'true');
+            } else {
+                icon.className = 'fa-regular fa-folder'; // Closed folder icon for deeper levels
+                li.setAttribute('data-expanded', 'false');
+            }
+
             li.appendChild(icon);
             li.appendChild(document.createTextNode(` ${node.name}`));
 
@@ -151,10 +159,8 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
             // Control folder expansion based on depth
             if (depth < 1) {
                 subList.style.display = 'block'; // Expand root and first sublevel
-                li.setAttribute('data-expanded', 'true');
             } else {
                 subList.style.display = 'none'; // Collapse anything deeper than the first sublevel
-                li.setAttribute('data-expanded', 'false');
             }
 
             // Recursively build the file tree for subfolders
@@ -176,6 +182,7 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
         container.appendChild(li);
     });
 }
+
 
 // Event delegation to handle folder icon clicks for expand/collapse
 document.addEventListener('DOMContentLoaded', function() {
