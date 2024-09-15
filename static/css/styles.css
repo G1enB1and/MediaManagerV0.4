@@ -221,6 +221,11 @@ body, html {
 }
 
 /* -- File Tree -- */
+#fileTree {
+    height: 100%; /* Ensure it takes up full height of the container */
+    overflow-y: auto; /* Add vertical scroll if content overflows */
+    padding-right: 15px; /* Add padding to account for the scrollbar */
+}
 
 /* File tree styles */
 ul.file-tree {
@@ -230,10 +235,19 @@ ul.file-tree {
 }
 
 ul.file-tree li {
-    list-style-type: none;
+    white-space: nowrap; /* Prevent file names from wrapping */
+    text-overflow: ellipsis; /* Show ellipsis if text overflows */
+    overflow: hidden; /* Hide any overflowing text */
+    list-style-type: none; /* don't delete this line! */
     position: relative;
     padding-left: 20px;
     margin: 5px 0;
+}
+
+/* Ensures subfolders also follow the same behavior */
+ul.file-tree ul {
+    white-space: nowrap;
+    padding-left: 8px;
 }
 
 /* Vertical lines */
@@ -285,9 +299,16 @@ ul.file-tree > li.root-folder::after {
 
 /* Ensure subfolders don't have extra space */
 ul.file-tree li.subfolder > ul {
-    margin-top: 5px;
-    margin-bottom: -5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
+
+/* Target file-item inside a subfolder */
+.subfolder > ul > li.file-item {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 /* this is needed if tree is collapsed by default instead of expanded by default */
 /* Collapsible folder 
 .file-tree ul {
