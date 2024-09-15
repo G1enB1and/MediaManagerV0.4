@@ -5,7 +5,7 @@ body, html {
     background-color: #1f1f1f; /* Consistent dark mode background */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Screen-friendly sans-serif font */
     color: #d5d5d5;
-    overflow-x: hidden;  /* Prevent horizontal scrolling */
+    overflow: hidden;  /* Prevent scrolling in body to allow scrolling independently in divs */
 }
 
 .container {
@@ -162,6 +162,7 @@ body, html {
     display: flex;
     flex-grow: 1;
     position: relative;
+    overflow: hidden; /*I am trying this to get scrollbar in file tree, but I may need to undo it to allow main content to scroll or make a container inside maincontent that can scroll */
 }
 
 .panel {
@@ -174,9 +175,20 @@ body, html {
     transition: width 0.2s ease; /* Smooth transition when resized */
 }
 
+.left-panel-container {
+    display: flex;
+    height: 100%; /* Make sure the left panel container takes full height */
+    position: relative;
+    overflow: hidden; /* Hide overflow by default */
+}
+
 #left-panel {
     display: block;
     height: 100%;
+    width: 250px; 
+    overflow-y: auto; /* Enable vertical scrollbar */
+    box-sizing: border-box; /* Include padding and borders in width/height calculations */
+    padding: 0 0 0 5px;
 }
 
 #right-panel {
@@ -201,7 +213,7 @@ body, html {
 }
 
 .resizer:hover {
-    width: 4px;
+    width: 5px;
     background-color: #3376cd;
 }
 
@@ -225,6 +237,7 @@ body, html {
     height: 100%; /* Ensure it takes up full height of the container */
     overflow-y: auto; /* Add vertical scroll if content overflows */
     padding-right: 15px; /* Add padding to account for the scrollbar */
+    padding-right: 15px; /* Add padding for the scrollbar */
 }
 
 /* File tree styles */
