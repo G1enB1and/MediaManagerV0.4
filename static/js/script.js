@@ -141,8 +141,10 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
         const li = document.createElement('li');
         const icon = document.createElement('i');
 
+        // Set the depth for each folder/file
+        li.setAttribute('data-depth', depth); // Add depth as a data attribute
+
         if (node.type === 'directory') {
-            // Folder icon logic
             if (depth < 1) {
                 icon.className = 'fa-regular fa-folder-open'; // Open folder icon for root and first sublevel
                 li.setAttribute('data-expanded', 'true');
@@ -173,20 +175,16 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
                 li.classList.add('subfolder');
             }
         } else {
-            // Determine the file type based on the extension
+            // Set file icon
             const fileName = node.name.toLowerCase();
             if (fileName.endsWith('.mp4') || fileName.endsWith('.mov') || fileName.endsWith('.avi') || fileName.endsWith('.mkv')) {
-                // Use video icon for video files
                 icon.className = 'fa-regular fa-file-video';
             } else if (fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.bmp')) {
-                // Use image icon for image files
                 icon.className = 'fa-regular fa-file-image';
             } else if (fileName.endsWith('.gif')) {
-                // Use specific icon for GIF files
-                icon.className = 'fa-regular fa-file-image'; // Use the image icon, as there's no specific animated GIF icon
+                icon.className = 'fa-regular fa-file-image'; // Use the image icon for GIF
             } else {
-                // Default file icon for other file types
-                icon.className = 'fa-regular fa-file';
+                icon.className = 'fa-regular fa-file'; // Default file icon
             }
 
             li.appendChild(icon);
@@ -197,6 +195,7 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
         container.appendChild(li);
     });
 }
+
 
 // Event delegation to handle folder icon clicks for expand/collapse
 document.addEventListener('DOMContentLoaded', function() {
@@ -260,16 +259,19 @@ function expandAll() {
 // Expand/Collapse to specific sublevel
 function toggleToSublevel(level) {
     document.querySelectorAll('#fileTree li').forEach(li => {
-        const depth = getDepth(li);
+        const depth = parseInt(li.getAttribute('data-depth'), 10); // Get the depth from the attribute
         const icon = li.querySelector('i');
         const subList = li.querySelector('ul');
 
         if (subList) {
-            if (depth <= level) {
+            // If the depth is less than or equal to the target level, expand the folder
+            if (depth < level) {
                 subList.style.display = 'block'; // Expand
                 li.setAttribute('data-expanded', 'true');
                 icon.className = 'fa-regular fa-folder-open';
-            } else {
+            } 
+            // If the depth is greater than the target level, collapse the folder
+            else if (depth >= level) {
                 subList.style.display = 'none'; // Collapse
                 li.setAttribute('data-expanded', 'false');
                 icon.className = 'fa-regular fa-folder';
@@ -278,14 +280,4 @@ function toggleToSublevel(level) {
     });
 }
 
-// Helper function to calculate the depth of a folder in the tree
-function getDepth(element) {
-    let depth = 0;
-    while (element.parentElement && element.parentElement.id !== 'fileTree') {
-        if (element.tagName === 'UL') {
-            depth++;
-        }
-        element = element.parentElement;
-    }
-    return depth;
-}
+
