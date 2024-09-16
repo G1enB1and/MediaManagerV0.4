@@ -112,7 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
     makeResizable(document.getElementById('right-resizer'), 'right');
 });
 
-//File Tree
+// File Tree
+let showFoldersOnly = false; // Track the current state of the toggle
+
 // Function to populate the file tree
 function populateFileTree() {
     const fileTreeContainer = document.getElementById('fileTree');
@@ -143,6 +145,11 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
 
         // Set the depth for each folder/file
         li.setAttribute('data-depth', depth); // Add depth as a data attribute
+
+        // Only include directories if "Show Folders Only" is active
+        if (showFoldersOnly && node.type !== 'directory') {
+            return; // Skip files if "Show Folders Only" is enabled
+        }
 
         if (node.type === 'directory') {
             if (depth < 1) {
@@ -196,6 +203,21 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
     });
 }
 
+function toggleFiles() {
+    // Toggle the state
+    showFoldersOnly = !showFoldersOnly;
+
+    // Update the text in the dropdown
+    const toggleFilesOption = document.getElementById('toggleFilesOption');
+    if (showFoldersOnly) {
+        toggleFilesOption.textContent = 'Show Files';
+    } else {
+        toggleFilesOption.textContent = 'Folders Only';
+    }
+
+    // Rebuild the file tree with the updated setting
+    populateFileTree();
+}
 
 // Event delegation to handle folder icon clicks for expand/collapse
 document.addEventListener('DOMContentLoaded', function() {

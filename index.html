@@ -54,12 +54,14 @@
                     <div class="file-tree-dropdown">
                         <button class="dropbtn file-tree-dropbtn">...</button>
                         <div class="dropdown-content file-tree-dropdown-content">
+                            <a href="#" id="toggleFilesOption" onclick="toggleFiles()">Folders Only</a> <!-- New toggle option -->
                             <a href="#" onclick="collapseAll()">Collapse All</a>
-                            <a href="#" onclick="toggleToSublevel(1)">Expand/Collapse to Sublevel 1</a>
-                            <a href="#" onclick="toggleToSublevel(2)">Expand/Collapse to Sublevel 2</a>
-                            <a href="#" onclick="toggleToSublevel(3)">Expand/Collapse to Sublevel 3</a>
+                            <a href="#" onclick="toggleToSublevel(1)">... to Sublevel 1</a>
+                            <a href="#" onclick="toggleToSublevel(2)">... to Sublevel 2</a>
+                            <a href="#" onclick="toggleToSublevel(3)">... to Sublevel 3</a>
                             <a href="#" onclick="expandAll()">Expand All</a>
                         </div>
+                        
                     </div>
                     <ul id="fileTree" class="file-tree">
                         <li>
