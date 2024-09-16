@@ -51,6 +51,16 @@
         <div class="main-content">
             <div id="left-panel-container" class = "left-panel-container">
                 <div id="left-panel" class="panel">
+                    <div class="file-tree-dropdown">
+                        <button class="dropbtn file-tree-dropbtn">...</button>
+                        <div class="dropdown-content file-tree-dropdown-content">
+                            <a href="#" onclick="collapseAll()">Collapse All</a>
+                            <a href="#" onclick="toggleToSublevel(1)">Expand/Collapse to Sublevel 1</a>
+                            <a href="#" onclick="toggleToSublevel(2)">Expand/Collapse to Sublevel 2</a>
+                            <a href="#" onclick="toggleToSublevel(3)">Expand/Collapse to Sublevel 3</a>
+                            <a href="#" onclick="expandAll()">Expand All</a>
+                        </div>
+                    </div>
                     <ul id="fileTree" class="file-tree">
                         <li>
                             <span class="folder-l-shape"></span><span class="folder-icon"><i class="fa-regular fa-folder"></i></span> Root

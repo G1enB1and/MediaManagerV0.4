@@ -198,8 +198,6 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
     });
 }
 
-
-
 // Event delegation to handle folder icon clicks for expand/collapse
 document.addEventListener('DOMContentLoaded', function() {
     const fileTreeContainer = document.getElementById('fileTree');
@@ -231,3 +229,63 @@ document.addEventListener('DOMContentLoaded', function() {
     // Call the function to populate the file tree
     populateFileTree();
 });
+
+/* file tree drop down menu */
+// Collapse all folders
+function collapseAll() {
+    document.querySelectorAll('#fileTree li[data-expanded="true"]').forEach(li => {
+        const icon = li.querySelector('i');
+        const subList = li.querySelector('ul');
+        if (subList) {
+            subList.style.display = 'none';
+            li.setAttribute('data-expanded', 'false');
+            icon.className = 'fa-regular fa-folder'; // Change to closed folder icon
+        }
+    });
+}
+
+// Expand all folders
+function expandAll() {
+    document.querySelectorAll('#fileTree li[data-expanded="false"]').forEach(li => {
+        const icon = li.querySelector('i');
+        const subList = li.querySelector('ul');
+        if (subList) {
+            subList.style.display = 'block';
+            li.setAttribute('data-expanded', 'true');
+            icon.className = 'fa-regular fa-folder-open'; // Change to open folder icon
+        }
+    });
+}
+
+// Expand/Collapse to specific sublevel
+function toggleToSublevel(level) {
+    document.querySelectorAll('#fileTree li').forEach(li => {
+        const depth = getDepth(li);
+        const icon = li.querySelector('i');
+        const subList = li.querySelector('ul');
+
+        if (subList) {
+            if (depth <= level) {
+                subList.style.display = 'block'; // Expand
+                li.setAttribute('data-expanded', 'true');
+                icon.className = 'fa-regular fa-folder-open';
+            } else {
+                subList.style.display = 'none'; // Collapse
+                li.setAttribute('data-expanded', 'false');
+                icon.className = 'fa-regular fa-folder';
+            }
+        }
+    });
+}
+
+// Helper function to calculate the depth of a folder in the tree
+function getDepth(element) {
+    let depth = 0;
+    while (element.parentElement && element.parentElement.id !== 'fileTree') {
+        if (element.tagName === 'UL') {
+            depth++;
+        }
+        element = element.parentElement;
+    }
+    return depth;
+}
