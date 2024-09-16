@@ -186,7 +186,7 @@ body, html {
     display: block;
     height: 100%;
     width: 250px; 
-    overflow-y: auto; /* Enable vertical scrollbar */
+    overflow-y: hidden; /* hide this scrollbar and show scrollbar inside file-tree*/
     box-sizing: border-box; /* Include padding and borders in width/height calculations */
     padding: 0 0 0 5px;
 }

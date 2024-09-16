@@ -182,16 +182,49 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
                 li.classList.add('subfolder');
             }
         } else {
-            // Set file icon
+            // Set file icon based on file type
             const fileName = node.name.toLowerCase();
+            
+            // Video file types
             if (fileName.endsWith('.mp4') || fileName.endsWith('.mov') || fileName.endsWith('.avi') || fileName.endsWith('.mkv')) {
                 icon.className = 'fa-regular fa-file-video';
-            } else if (fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.bmp')) {
+            } 
+            // Image file types
+            else if (fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.bmp') || fileName.endsWith('.gif')) {
                 icon.className = 'fa-regular fa-file-image';
-            } else if (fileName.endsWith('.gif')) {
-                icon.className = 'fa-regular fa-file-image'; // Use the image icon for GIF
-            } else {
-                icon.className = 'fa-regular fa-file'; // Default file icon
+            } 
+            // Audio file types (music)
+            else if (fileName.endsWith('.mp3') || fileName.endsWith('.wav') || fileName.endsWith('.flac') || fileName.endsWith('.aac') || fileName.endsWith('.ogg')) {
+                icon.className = 'fa-regular fa-file-audio';
+            } 
+            // Document file types
+            else if (fileName.endsWith('.pdf')) {
+                icon.className = 'fa-regular fa-file-pdf';
+            } 
+            else if (fileName.endsWith('.doc') || fileName.endsWith('.docx')) {
+                icon.className = 'fa-regular fa-file-word';
+            } 
+            else if (fileName.endsWith('.xls') || fileName.endsWith('.xlsx')) {
+                icon.className = 'fa-regular fa-file-excel';
+            } 
+            else if (fileName.endsWith('.ppt') || fileName.endsWith('.pptx')) {
+                icon.className = 'fa-regular fa-file-powerpoint';
+            } 
+            // Code file types
+            else if (fileName.endsWith('.html') || fileName.endsWith('.css') || fileName.endsWith('.js') || fileName.endsWith('.py') || fileName.endsWith('.java')) {
+                icon.className = 'fa-regular fa-file-code';
+            } 
+            // Compressed file types
+            else if (fileName.endsWith('.zip') || fileName.endsWith('.rar') || fileName.endsWith('.7z') || fileName.endsWith('.tar') || fileName.endsWith('.gz')) {
+                icon.className = 'fa-regular fa-file-archive';
+            } 
+            // Text file types
+            else if (fileName.endsWith('.txt') || fileName.endsWith('.md')) {
+                icon.className = 'fa-regular fa-file-alt';
+            } 
+            // Default catch-all for unknown or generic files
+            else {
+                icon.className = 'fa-regular fa-file';
             }
 
             li.appendChild(icon);
