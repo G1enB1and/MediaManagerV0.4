@@ -23,9 +23,9 @@ def get_directory_structure(directory):
         return file_tree  # Return after processing this directory
 
 def generate_file_tree():
-    directory = 'Pictures'  # Change this to your desired directory
+    directory = 'Media'  # Change this to your desired directory
     file_tree = {
-        "name": "Pictures",  # Add the root folder
+        "name": "Media",  # Add the root folder
         "type": "directory",
         "path": directory,
         "children": get_directory_structure(directory)  # Recursively get the children

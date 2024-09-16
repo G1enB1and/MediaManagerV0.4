@@ -183,10 +183,14 @@ body, html {
 }
 
 #left-panel {
-    display: block;
+    /*position: relative; /* This allows the dropdown to be positioned relative to the panel */
+    display: flex;
+    flex-direction: row; /* Ensure flexbox is used to keep the dropdown and fileTree aligned */
+    align-items: flex-start;
     height: 100%;
     width: 250px; 
-    overflow-y: hidden; /* hide this scrollbar and show scrollbar inside file-tree*/
+    overflow-y: auto; /* hide this scrollbar and show scrollbar inside file-tree*/
+    overflow-x: hidden;
     box-sizing: border-box; /* Include padding and borders in width/height calculations */
     padding: 0 0 0 5px;
 }
@@ -234,11 +238,12 @@ body, html {
 
 /* -- File Tree -- */
 #fileTree {
-    height: 100%; /* Ensure it takes up full height of the container */
-    overflow-y: auto; /* Add vertical scroll if content overflows */
+    flex-grow: 1; /* Let the fileTree take the remaining space below the dropdown */
+    height: auto; /* accommodate for top margin to allow scrolling to bottom */
+    overflow-y: visible; /* Add vertical scroll if content overflows */
+    overflow-x: hidden;
     padding-right: 15px; /* Add padding to account for the scrollbar */
-    padding-right: 15px; /* Add padding for the scrollbar */
-    margin-top: 10px;
+    padding-top: 10px;
     margin-left: 5px;
 }
 
@@ -313,9 +318,9 @@ ul.file-tree > li.root-folder::after {
 
 /* Style for the file tree dropdown menu */
 .file-tree-dropdown {
-    position: absolute;
+    margin-left: auto;
+    margin-right: 15px;
     top: 5px;
-    right: 30px; /* Allows space for the scrollbar */
     z-index: 1000;
 }
 
