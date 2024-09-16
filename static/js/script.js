@@ -359,5 +359,3 @@ function toggleToSublevel(level) {
         }
     });
 }
-
-
