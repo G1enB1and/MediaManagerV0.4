@@ -230,6 +230,31 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /* file tree drop down menu */
+// Attach the click event listener for the file tree dropdown
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdownButton = document.querySelector('.file-tree-dropbtn');
+    const dropdownContent = document.querySelector('.file-tree-dropdown-content');
+
+    dropdownButton.addEventListener('click', function (event) {
+        event.stopPropagation();  // Prevent event from propagating to the document
+        const isVisible = dropdownContent.style.display === 'block';
+
+        // Toggle the dropdown visibility
+        if (isVisible) {
+            dropdownContent.style.display = 'none';
+        } else {
+            dropdownContent.style.display = 'block';
+        }
+    });
+
+    // Close dropdown if clicking outside
+    document.addEventListener('click', function (event) {
+        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+            dropdownContent.style.display = 'none';  // Close dropdown
+        }
+    });
+});
+
 // Collapse all folders
 function collapseAll() {
     document.querySelectorAll('#fileTree li[data-expanded="true"]').forEach(li => {

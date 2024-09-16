@@ -360,10 +360,6 @@ ul.file-tree > li.root-folder::after {
     border-radius: 4px;
 }
 
-.file-tree-dropdown:hover .file-tree-dropdown-content {
-    display: block;
-}
-
 /* Ensure the dropdown is hidden when the left panel is hidden */
 #left-panel[style*="display: none"] + .file-tree-dropdown {
     display: none;
