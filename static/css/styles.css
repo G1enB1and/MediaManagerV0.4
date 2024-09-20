@@ -221,10 +221,13 @@ body, html {
 }
 
 .left-panel-container {
-    flex: 0 0 250px; /* Fixed initial width, but adjustable */
-    display: flex;
+    flex: 0 0 auto;  /* Do not grow, do not shrink, initial size based on content */
+    width: 250px;  /* Initial width, but it’s meant to be adjustable via JS */
+    min-width: 5px; /* allow for almost full collapse, but leave the resizer along the left to grab again */
+    max-width: 600px;
+    /*display: flex;*/
     height: 100%; /* Make sure the left panel container takes full height */
-    position: relative;
+    /*position: relative;*/
     overflow: hidden; /* Hide overflow by default */
 }
 
@@ -245,8 +248,8 @@ body, html {
 }
 
 .content-area {
-    transition: margin-left 0.5s ease; /* Smooth transition for margin adjustments */
-    flex-grow: 1;
+    transition: flex-basis 0.5s ease; /* Smooth transition for margin adjustments */
+    flex-grow: 1; /* Grow to take remaining space */
     background-color: #1e1e1e;
     overflow: hidden; /* Prevents the content from overflowing */
     display: flex;
@@ -261,7 +264,8 @@ body, html {
     position: absolute;
     top: 0;
     bottom: 0;
-    z-index: 10;
+    z-index: 100;
+    left: 250px; /* Initial position of the resizer */
 }
 
 .resizer:hover {

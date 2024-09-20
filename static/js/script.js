@@ -38,17 +38,30 @@ function toggleRightPanel() {
 }
 
 // Handle resizing
-function makeResizable(resizer) {
+function makeResizable() {
+    const resizer = document.getElementById('left-resizer');
+    const leftPanelContainer = document.getElementById('left-panel-container');
+    const contentArea = document.querySelector('.content-area');
+
     let startX, startWidth;
 
     resizer.addEventListener('mousedown', function(e) {
+        e.preventDefault();
         startX = e.clientX;
-        startWidth = parseInt(document.getElementById('left-panel-container').style.width, 10);
+        startWidth = parseInt(window.getComputedStyle(leftPanelContainer).width, 10);
 
         function resizePanel(e) {
-            const newWidth = startWidth + e.clientX - startX;
-            document.getElementById('left-panel-container').style.width = `${newWidth}px`;
-            document.querySelector('.content-area').style.marginLeft = `${newWidth}px`; // Adjust content area margin accordingly
+            const newWidth = startWidth + (e.clientX - startX);
+            if (newWidth > 5 && newWidth < 600) {  // Assuming min and max widths for left panel
+                // Update left-panel-container's width
+                leftPanelContainer.style.width = `${newWidth}px`;
+                
+                // Adjust the resizer position to follow the left panel's new width
+                resizer.style.left = `${newWidth}px`;
+
+                // Adjust the content-area's flex-basis to match the remaining space
+                contentArea.style.flexBasis = `calc(100% - ${newWidth}px)`;
+            }
         }
 
         function stopResizePanel() {
@@ -62,10 +75,7 @@ function makeResizable(resizer) {
 }
 
 // Initialize event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    makeResizable(document.getElementById('left-resizer'));
-    makeResizable(document.getElementById('right-resizer'), 'right');
-});
+document.addEventListener('DOMContentLoaded', makeResizable);
 
 // Function to toggle the dropdown visibility
 function toggleDropdown(event) {
