@@ -151,6 +151,7 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
             return; // Skip files if "Show Folders Only" is enabled
         }
 
+        // File/folder icon logic
         if (node.type === 'directory') {
             if (depth < 1) {
                 icon.className = 'fa-regular fa-folder-open'; // Open folder icon for root and first sublevel
@@ -159,6 +160,9 @@ function buildFileTree(container, nodes, depth = 0, isRoot = false) {
                 icon.className = 'fa-regular fa-folder'; // Closed folder icon for deeper levels
                 li.setAttribute('data-expanded', 'false');
             }
+
+            // Set data-path attribute to the folder path
+            li.setAttribute('data-path', node.path); // Assign the folder path to data-path
 
             li.appendChild(icon);
             li.appendChild(document.createTextNode(` ${node.name}`));
@@ -252,7 +256,7 @@ function toggleFiles() {
     populateFileTree();
 }
 
-// Event delegation to handle folder icon clicks for expand/collapse
+// Event delegation to handle folder icon clicks for expand/collapse and folder names for updating images.json
 document.addEventListener('DOMContentLoaded', function() {
     const fileTreeContainer = document.getElementById('fileTree');
 
@@ -260,6 +264,45 @@ document.addEventListener('DOMContentLoaded', function() {
     fileTreeContainer.addEventListener('click', function(event) {
         const clickedElement = event.target;
 
+        // -- update images.json when a folder name is clicked -- //
+        // Check if the clicked element is a folder name (not the icon)
+        if (!clickedElement.classList.contains('fa-folder') && !clickedElement.classList.contains('fa-folder-open')) {
+            const parentLi = clickedElement.closest('li');
+            let folderPath = parentLi.getAttribute('data-path'); // Ensure you have folder path data attribute
+
+            if (folderPath) {
+                // Convert the full path to a relative path starting from "Media"
+                const mediaIndex = folderPath.indexOf('Media/');
+                if (mediaIndex !== -1) {
+                    folderPath = folderPath.substring(mediaIndex);  // Remove everything before "Media"
+                }
+
+                // Remove leading and trailing slashes, if any
+                folderPath = folderPath.replace(/^\/|\/$/g, '');
+
+                console.log(`Folder path clicked (relative): ${folderPath}`); // Debugging message
+
+                // Make an AJAX call to update images.json based on the selected folder
+                fetch(`/update-images-json?folder=${encodeURIComponent(folderPath)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Update the main content area with the new images/videos from images.json
+                        updateGallery(data);
+                    })
+                    .catch(error => {
+                        console.error('Error updating images.json:', error);
+                    });
+            } else {
+                console.error('No folder path found');
+            }
+        }
+
+        // -- Toggle the folder open or closed when the folder icon is clicked -- //
         // Check if the clicked element is a folder icon (the i.fa-folder element)
         if (clickedElement.classList.contains('fa-folder') || clickedElement.classList.contains('fa-folder-open')) {
             const parentLi = clickedElement.closest('li');
@@ -280,11 +323,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Function to update the main content with images
+    function updateGallery(mediaFiles) {
+        const gallery = document.querySelector('.gallery');
+        gallery.innerHTML = '';  // Clear the content area
+    
+        mediaFiles.forEach(file => {
+            const img = document.createElement('img');
+            img.src = file;
+            img.classList.add('content-image');  // Apply any specific styling you want
+            gallery.appendChild(img);
+        });
+    }
+
     // Call the function to populate the file tree
     populateFileTree();
 });
 
-/* file tree drop down menu */
+/* file tree and drop down menu */
 // Attach the click event listener for the file tree dropdown
 document.addEventListener('DOMContentLoaded', function () {
     const dropdownButton = document.querySelector('.file-tree-dropbtn');

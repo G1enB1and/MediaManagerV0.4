@@ -165,6 +165,51 @@ body, html {
     overflow: hidden; /*I am trying this to get scrollbar in file tree, but I may need to undo it to allow main content to scroll or make a container inside maincontent that can scroll */
 }
 
+.main-content .panel {
+    min-width: 250px;
+    max-width: 250px;
+    overflow-y: auto;
+}
+
+.gallery {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+    padding: 10px;
+    max-width: 100%;
+    overflow-y: auto; /* Ensures vertical scrolling */
+    align-items: start;
+    height: 100%; /* Ensures the gallery fills the available space */
+}
+
+/* Style for each image */
+.gallery img {
+    width: 100%; /* makes image take full width of the column */
+    height: auto; /* maintains aspect ratio */
+    border-radius: 5px; /* optional: rounds the corners of the images */
+    transition: transform 0.2s; /* smooth transform effect on hover */
+}
+
+/* Hover effect to slightly enlarge images */
+.gallery img:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* Media queries for responsive adjustments */
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery {
+        grid-template-columns: 1fr; /* single column view on small devices */
+    }
+}
+
 .panel {
     background-color: #181818;
     color: #d5d5d5;
@@ -176,6 +221,7 @@ body, html {
 }
 
 .left-panel-container {
+    flex: 0 0 250px; /* Fixed initial width, but adjustable */
     display: flex;
     height: 100%; /* Make sure the left panel container takes full height */
     position: relative;
@@ -186,7 +232,8 @@ body, html {
     position: relative; /* This allows the dropdown to be positioned relative to the panel */
     display: block;
     height: 100%;
-    width: 250px; 
+    /*width: 250px; moved initial fixed width to left-panel-container */
+    width: 100%;
     overflow-y: auto; /* hide this scrollbar and show scrollbar inside file-tree*/
     overflow-x: hidden;
     box-sizing: border-box; /* Include padding and borders in width/height calculations */
@@ -201,11 +248,14 @@ body, html {
     flex-grow: 1;
     background-color: #1e1e1e;
     padding: 10px;
+    overflow: hidden; /* Prevents the content from overflowing */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Resizer styles */
 .resizer {
-    width: 1px;
+    width: 1px; /* I want this to be 1px not 5px until hovered over */
     cursor: ew-resize;
     background-color: #333;
     position: absolute;

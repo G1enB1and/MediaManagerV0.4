@@ -76,7 +76,8 @@
                     <div class="file-tree-dropdown">
                         <button class="dropbtn file-tree-dropbtn">...</button>
                         <div class="dropdown-content file-tree-dropdown-content">
-                            <a href="#" id="toggleFilesOption" onclick="toggleFiles()">Folders Only</a> <!-- New toggle option -->
+                            <a href="#" id="toggleMultiSelect" onclick="toggleMultiSelect()">Multi-Select On</a> <!-- New option for multi-select -->
+                            <a href="#" id="toggleFilesOption" onclick="toggleFiles()">Folders Only</a>
                             <a href="#" onclick="collapseAll()">Collapse All</a>
                             <a href="#" onclick="toggleToSublevel(1)">... to Sublevel 1</a>
                             <a href="#" onclick="toggleToSublevel(2)">... to Sublevel 2</a>
@@ -87,11 +88,13 @@
                 </div>
                 
             </div>
-            <div id="left-resizer" class="resizer"></div> <!-- New Resizer -->
+            <div id="left-resizer" class="resizer"></div>
             <div class="content-area">
-                Main Content Area
+                <div class="gallery">
+                    Gallery
+                </div>
             </div>
-            <div id="right-resizer" class="resizer"></div> <!-- New Resizer -->
+            <div id="right-resizer" class="resizer"></div> 
             <div id="right-panel" class="panel">Right Panel Content</div>
         </div>
     </div>

@@ -1,6 +1,6 @@
-pip install Jinja2
-pip install Pillow
-pip install mutagen
-pip install python-magic-bin
-pip install piexif
-pip install pyexiv2
+Jinja2
+Pillow
+mutagen
+python-magic-bin
+piexif
+pyexiv2
