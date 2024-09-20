@@ -165,12 +165,6 @@ body, html {
     overflow: hidden; /*I am trying this to get scrollbar in file tree, but I may need to undo it to allow main content to scroll or make a container inside maincontent that can scroll */
 }
 
-.main-content .panel {
-    min-width: 250px;
-    max-width: 250px;
-    overflow-y: auto;
-}
-
 .gallery {
     flex: 1; /* Ensures the gallery fills the content area */
     display: grid;
@@ -215,7 +209,6 @@ body, html {
     color: #d5d5d5;
     padding: 10px;
     overflow: auto;
-    width: 250px;
     box-sizing: border-box; /* Include padding in width calculations */
     transition: width 0.2s ease; /* Smooth transition when resized */
 }
@@ -235,7 +228,6 @@ body, html {
     position: relative; /* This allows the dropdown to be positioned relative to the panel */
     display: block;
     height: 100%;
-    /*width: 250px; moved initial fixed width to left-panel-container */
     width: 100%;
     overflow-y: auto; /* hide this scrollbar and show scrollbar inside file-tree*/
     overflow-x: hidden;
