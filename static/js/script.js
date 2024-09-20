@@ -37,9 +37,9 @@ function toggleRightPanel() {
         rightPanel.style.display = 'block';
         rightPanel.style.width = '350px'; // Initialize right panel width
         rightResizer.style.display = 'block';
-        rightResizer.style.right = '350px'; // Position resizer
+        rightResizer.style.right = '349px'; // Position resizer
         const leftPanelWidth = leftPanelContainer.getBoundingClientRect().width;
-        contentArea.style.width = `calc(100% - ${leftPanelWidth + 350}px)`; // Adjust content area width
+        contentArea.style.width = `calc(100% - ${leftPanelWidth + 351}px)`; // Adjust content area width
         icon.src = 'static/images/sidebar-flip-regular-white.png'; // Icon when panel is toggled on
     }
 }

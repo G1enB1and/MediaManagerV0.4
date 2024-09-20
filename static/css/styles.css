@@ -277,11 +277,11 @@ body, html {
 }
 
 #left-resizer {
-    left: 257px; /* Initially placed after the left panel */
+    left: 256px; /* Initially placed after the left panel */
 }
 
 #right-resizer {
-    right: 351px; /* Initially placed before the right panel */
+    right: 349x; /* Initially placed before the right panel */
     display: none;
 }
 
