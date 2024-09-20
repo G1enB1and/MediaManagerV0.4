@@ -1,17 +1,18 @@
 function toggleLeftPanel() {
-    var panel = document.getElementById('left-panel');
+    var panel = document.getElementById('left-panel-container');
+    var contentArea = document.querySelector('.content-area');
     var icon = document.querySelector('#left-panel-toggle img');
     var resizer = document.getElementById('left-resizer');
 
-    // Check actual computed style of the left panel
-    var panelDisplay = window.getComputedStyle(panel).display;
-
-    if (panelDisplay === 'block') {
+    // Check the current display style of the panel to toggle it
+    if (panel.style.display === 'block' || panel.style.display === '') {
         panel.style.display = 'none';
+        contentArea.style.marginLeft = '0px'; // Expand content area to full width
         resizer.style.display = 'none';
         icon.src = 'static/images/sidebar-light-white.png'; // Icon when panel is toggled off
     } else {
         panel.style.display = 'block';
+        /*contentArea.style.marginLeft = '250px'; */ // Restrict content area width
         resizer.style.display = 'block';
         icon.src = 'static/images/sidebar-regular-white.png'; // Icon when panel is toggled on
     }
@@ -37,41 +38,32 @@ function toggleRightPanel() {
 }
 
 // Handle resizing
-function makeResizable(resizer, side) {
-    let startX = 0;
-    let startWidth = 0;
+function makeResizable(resizer) {
+    let startX, startWidth;
 
     resizer.addEventListener('mousedown', function(e) {
         startX = e.clientX;
-        startWidth = side === 'left' ? document.getElementById('left-panel').offsetWidth : document.getElementById('right-panel').offsetWidth;
-        document.body.classList.add('is-resizing');
+        startWidth = parseInt(document.getElementById('left-panel-container').style.width, 10);
 
-        document.addEventListener('mousemove', resize);
-        document.addEventListener('mouseup', stopResize);
-    });
-
-    function resize(e) {
-        if (side === 'left') {
-            const newWidth = startWidth + (e.clientX - startX);
-            document.getElementById('left-panel').style.width = newWidth + 'px';
-            resizer.style.left = newWidth + 'px';
-        } else {
-            const newWidth = startWidth - (e.clientX - startX);
-            document.getElementById('right-panel').style.width = newWidth + 'px';
-            resizer.style.right = newWidth + 'px';
+        function resizePanel(e) {
+            const newWidth = startWidth + e.clientX - startX;
+            document.getElementById('left-panel-container').style.width = `${newWidth}px`;
+            document.querySelector('.content-area').style.marginLeft = `${newWidth}px`; // Adjust content area margin accordingly
         }
-    }
 
-    function stopResize() {
-        document.body.classList.remove('is-resizing');
-        document.removeEventListener('mousemove', resize);
-        document.removeEventListener('mouseup', stopResize);
-    }
+        function stopResizePanel() {
+            document.removeEventListener('mousemove', resizePanel);
+            document.removeEventListener('mouseup', stopResizePanel);
+        }
+
+        document.addEventListener('mousemove', resizePanel);
+        document.addEventListener('mouseup', stopResizePanel);
+    });
 }
 
 // Initialize event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    makeResizable(document.getElementById('left-resizer'), 'left');
+    makeResizable(document.getElementById('left-resizer'));
     makeResizable(document.getElementById('right-resizer'), 'right');
 });
 

@@ -172,7 +172,7 @@ body, html {
 }
 
 .gallery {
-    flex-grow: 1;
+    flex: 1; /* Ensures the gallery fills the content area */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 10px;
@@ -245,9 +245,9 @@ body, html {
 }
 
 .content-area {
+    transition: margin-left 0.5s ease; /* Smooth transition for margin adjustments */
     flex-grow: 1;
     background-color: #1e1e1e;
-    padding: 10px;
     overflow: hidden; /* Prevents the content from overflowing */
     display: flex;
     flex-direction: column;
@@ -255,13 +255,13 @@ body, html {
 
 /* Resizer styles */
 .resizer {
-    width: 1px; /* I want this to be 1px not 5px until hovered over */
+    width: 1px; /* DO NOT change this to 5px */
     cursor: ew-resize;
     background-color: #333;
     position: absolute;
     top: 0;
     bottom: 0;
-    z-index: 1;
+    z-index: 10;
 }
 
 .resizer:hover {
