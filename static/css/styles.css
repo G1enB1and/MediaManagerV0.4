@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body, html {
     height: 100%;
     margin: 0;
@@ -215,13 +219,12 @@ body, html {
 
 .left-panel-container {
     flex: 0 0 auto;  /* Do not grow, do not shrink, initial size based on content */
-    width: 250px;  /* Initial width, but it’s meant to be adjustable via JS */
-    min-width: 5px; /* allow for almost full collapse, but leave the resizer along the left to grab again */
+    width: 256px;  /* Initial width, but it’s meant to be adjustable via JS */
+    min-width: 1px; /* allow for almost full collapse, but leave the resizer along the left to grab again */
     max-width: 600px;
-    /*display: flex;*/
-    height: 100%; /* Make sure the left panel container takes full height */
-    /*position: relative;*/
+    height: 100%; 
     overflow: hidden; /* Hide overflow by default */
+    box-sizing: border-box;
 }
 
 #left-panel {
@@ -236,16 +239,25 @@ body, html {
 }
 
 #right-panel {
-    display: none;
+    display: none; /* Start with the right panel hidden */
+    width: 350px; /* Initial width for the right panel */
+    background-color: #181818;
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+    box-sizing: border-box;
+    margin: 0px;
 }
 
 .content-area {
-    transition: flex-basis 0.5s ease; /* Smooth transition for margin adjustments */
+    display: flex;
     flex-grow: 1; /* Grow to take remaining space */
     background-color: #1e1e1e;
     overflow: hidden; /* Prevents the content from overflowing */
-    display: flex;
-    flex-direction: column;
+    transition: width 0.2s ease; /* Smooth transition for resizing */
+    width: calc(100% - 600px); /* Initial width calculation when both panels are shown */
+    padding: 0px;
+    margin: 0px;
 }
 
 /* Resizer styles */
@@ -257,20 +269,19 @@ body, html {
     top: 0;
     bottom: 0;
     z-index: 100;
-    left: 250px; /* Initial position of the resizer */
 }
 
 .resizer:hover {
-    width: 5px;
+    width: 7px;
     background-color: #3376cd;
 }
 
 #left-resizer {
-    left: 250px; /* Initially placed after the left panel */
+    left: 257px; /* Initially placed after the left panel */
 }
 
 #right-resizer {
-    right: 250px; /* Initially placed before the right panel */
+    right: 351px; /* Initially placed before the right panel */
     display: none;
 }
 

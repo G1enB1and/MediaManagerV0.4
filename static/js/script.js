@@ -18,60 +18,85 @@ function toggleLeftPanel() {
     }
 }
 
+// Toggle Right Panel
 function toggleRightPanel() {
-    var panel = document.getElementById('right-panel');
-    var icon = document.querySelector('#right-panel-toggle img');
-    var resizer = document.getElementById('right-resizer');
+    const rightPanel = document.getElementById('right-panel');
+    const rightResizer = document.getElementById('right-resizer');
+    const contentArea = document.querySelector('.content-area');
+    const icon = document.querySelector('#right-panel-toggle img');
 
-    // Check actual computed style of the right panel
-    var panelDisplay = window.getComputedStyle(panel).display;
+    const panelDisplay = window.getComputedStyle(rightPanel).display;
 
     if (panelDisplay === 'block') {
-        panel.style.display = 'none';
-        resizer.style.display = 'none';
+        rightPanel.style.display = 'none';
+        rightResizer.style.display = 'none';
+        const leftPanelWidth = leftPanelContainer.getBoundingClientRect().width;
+        contentArea.style.width = `calc(100% - ${leftPanelWidth}px)`; // Adjust content area width
         icon.src = 'static/images/sidebar-flip-light-white.png'; // Icon when panel is toggled off
     } else {
-        panel.style.display = 'block';
-        resizer.style.display = 'block';
+        rightPanel.style.display = 'block';
+        rightPanel.style.width = '350px'; // Initialize right panel width
+        rightResizer.style.display = 'block';
+        rightResizer.style.right = '350px'; // Position resizer
+        const leftPanelWidth = leftPanelContainer.getBoundingClientRect().width;
+        contentArea.style.width = `calc(100% - ${leftPanelWidth + 350}px)`; // Adjust content area width
         icon.src = 'static/images/sidebar-flip-regular-white.png'; // Icon when panel is toggled on
     }
 }
 
 // Handle resizing
 function makeResizable() {
-    const resizer = document.getElementById('left-resizer');
+    const leftResizer = document.getElementById('left-resizer');
+    const rightResizer = document.getElementById('right-resizer');
     const leftPanelContainer = document.getElementById('left-panel-container');
+    const rightPanel = document.getElementById('right-panel');
     const contentArea = document.querySelector('.content-area');
 
     let startX, startWidth;
 
-    resizer.addEventListener('mousedown', function(e) {
-        e.preventDefault();
-        startX = e.clientX;
-        startWidth = parseInt(window.getComputedStyle(leftPanelContainer).width, 10);
+    function initResizer(resizer, side) {
+        resizer.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            startX = e.clientX;
 
-        function resizePanel(e) {
-            const newWidth = startWidth + (e.clientX - startX);
-            if (newWidth > 5 && newWidth < 600) {  // Assuming min and max widths for left panel
-                // Update left-panel-container's width
-                leftPanelContainer.style.width = `${newWidth}px`;
-                
-                // Adjust the resizer position to follow the left panel's new width
-                resizer.style.left = `${newWidth}px`;
-
-                // Adjust the content-area's flex-basis to match the remaining space
-                contentArea.style.flexBasis = `calc(100% - ${newWidth}px)`;
+            if (side === 'left') {
+                startWidth = leftPanelContainer.getBoundingClientRect().width;
+            } else if (side === 'right') {
+                startWidth = rightPanel.getBoundingClientRect().width;
             }
-        }
 
-        function stopResizePanel() {
-            document.removeEventListener('mousemove', resizePanel);
-            document.removeEventListener('mouseup', stopResizePanel);
-        }
+            function resizePanel(e) {
+                const newWidth = startWidth + (side === 'left' ? e.clientX - startX : startX - e.clientX);
+                
+                if (newWidth > 1 && newWidth < 600) {  // Ensure widths stay within reasonable bounds
+                    if (side === 'left') {
+                        // Update left panel and content-area widths
+                        leftPanelContainer.style.width = `${newWidth}px`;
+                        leftResizer.style.left = `${newWidth}px`;
+                        const rightPanelWidth = rightPanel.getBoundingClientRect().width;
+                        contentArea.style.width = `calc(100% - ${newWidth + rightPanelWidth}px)`;
+                    } else if (side === 'right') {
+                        // Update right panel and content-area widths
+                        rightPanel.style.width = `${newWidth}px`;
+                        rightResizer.style.right = `${newWidth}px`;
+                        const leftPanelWidth = leftPanelContainer.getBoundingClientRect().width;
+                        contentArea.style.width = `calc(100% - ${leftPanelWidth + newWidth}px)`;
+                    }
+                }
+            }
 
-        document.addEventListener('mousemove', resizePanel);
-        document.addEventListener('mouseup', stopResizePanel);
-    });
+            function stopResizePanel() {
+                document.removeEventListener('mousemove', resizePanel);
+                document.removeEventListener('mouseup', stopResizePanel);
+            }
+
+            document.addEventListener('mousemove', resizePanel);
+            document.addEventListener('mouseup', stopResizePanel);
+        });
+    }
+
+    initResizer(leftResizer, 'left');
+    initResizer(rightResizer, 'right');
 }
 
 // Initialize event listeners
