@@ -28,24 +28,25 @@
                             <a href="#">Settings</a>
                         </div>
                     </li>
+                    <!-- View dropdown -->
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropbtn">View</a>
                         <div class="dropdown-content">
-                            <a href="#">About</a>
-                            <a href="#" onclick="toggleLeftPanel()">Left Panel</a>
-                            <a href="#" onclick="toggleRightPanel()">Right Panel</a>
+                            <a href="#" id="view-toggle-left-panel">Left Panel</a>
+                            <a href="#" id="view-toggle-right-panel">Right Panel</a>
                         </div>
                     </li>
                 </ul>
             </div>
             <input type="text" class="search-bar" placeholder="Search...">
             <div class="panel-toggles">
-                <button id="left-panel-toggle" onclick="toggleLeftPanel()">
+                <button id="left-panel-toggle">
                     <img src="static/images/sidebar-regular-white.png" alt="Toggle Left Panel">
                 </button>
-                <button id="right-panel-toggle" onclick="toggleRightPanel()">
+                <button id="right-panel-toggle">
                     <img src="static/images/sidebar-flip-light-white.png" alt="Toggle Right Panel">
                 </button>
+                
             </div>
         </div>
         <div class="main-content">
@@ -74,15 +75,15 @@
                         </li>
                     </ul>
                     <div class="file-tree-dropdown">
-                        <button class="dropbtn file-tree-dropbtn">...</button>
-                        <div class="dropdown-content file-tree-dropdown-content">
-                            <a href="#" id="toggleMultiSelect" onclick="toggleMultiSelect()">Multi-Select On</a> <!-- New option for multi-select -->
-                            <a href="#" id="toggleFilesOption" onclick="toggleFiles()">Folders Only</a>
-                            <a href="#" onclick="collapseAll()">Collapse All</a>
-                            <a href="#" onclick="toggleToSublevel(1)">... to Sublevel 1</a>
-                            <a href="#" onclick="toggleToSublevel(2)">... to Sublevel 2</a>
-                            <a href="#" onclick="toggleToSublevel(3)">... to Sublevel 3</a>
-                            <a href="#" onclick="expandAll()">Expand All</a>
+                        <button class="dropbtn file-tree-dropbtn" id="file-tree-dropdown-btn">...</button>
+                        <div class="dropdown-content file-tree-dropdown-content" id="file-tree-dropdown-content">
+                            <a href="#" id="toggleMultiSelect">Multi-Select On</a> <!-- New option for multi-select -->
+                            <a href="#" id="toggleFilesOption">Folders Only</a>
+                            <a href="#" id="collapseAll">Collapse All</a>
+                            <a href="#" id="toggleToSublevel1">... to Sublevel 1</a>
+                            <a href="#" id="toggleToSublevel2">... to Sublevel 2</a>
+                            <a href="#" id="toggleToSublevel3">... to Sublevel 3</a>
+                            <a href="#" id="expandAll">Expand All</a>
                         </div>
                     </div>
                 </div>
@@ -99,6 +100,7 @@
         </div>
     </div>
 
-    <script src="static/js/script.js"></script>
+    <script type="module" src="static/js/main.js"></script>
+
 </body>
 </html>

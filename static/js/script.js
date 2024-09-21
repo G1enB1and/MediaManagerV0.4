@@ -283,7 +283,7 @@ function toggleFiles() {
     populateFileTree();
 }
 
-// Function to handle folder clicks
+// on page load:
 document.addEventListener('DOMContentLoaded', function() {
     const fileTreeContainer = document.getElementById('fileTree');
 
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // -- Toggle the folder open or closed when the folder icon is clicked -- //
+        // Toggle the folder open or closed when the folder icon is clicked
         // Check if the clicked element is a folder icon (the i.fa-folder element)
         if (clickedElement.classList.contains('fa-folder') || clickedElement.classList.contains('fa-folder-open')) {
             const parentLi = clickedElement.closest('li');
