@@ -146,18 +146,18 @@ let showFoldersOnly = false; // Track the current state of the toggle
 function populateFileTree() {
     const fileTreeContainer = document.getElementById('fileTree');
 
-    // Show a loading indicator while fetching data
+    // Show a loading indicator while fetching the file tree
     fileTreeContainer.innerHTML = '<li>Loading...</li>';
 
-    // Fetch the file tree from the JSON file
+    // Fetch the file tree from file_tree.json
     fetch('/static/file_tree.json')
         .then(response => response.json())
         .then(data => {
             // Clear the loading message
             fileTreeContainer.innerHTML = '';
 
-            // Build the file tree starting from the root (Pictures folder)
-            buildFileTree(fileTreeContainer, [data], 0, true);  // Pass root folder data as an array and mark as root
+            // Build the file tree starting from the root
+            buildFileTree(fileTreeContainer, [data], 0, true);
         })
         .catch(error => {
             console.error('Error fetching file tree:', error);
@@ -283,19 +283,18 @@ function toggleFiles() {
     populateFileTree();
 }
 
-// Event delegation to handle folder icon clicks for expand/collapse and folder names for updating images.json
+// Function to handle folder clicks
 document.addEventListener('DOMContentLoaded', function() {
     const fileTreeContainer = document.getElementById('fileTree');
 
-    // Event delegation: Listen for clicks on folder icons within the file tree
+    // Event listener for folder clicks
     fileTreeContainer.addEventListener('click', function(event) {
         const clickedElement = event.target;
 
-        // -- update images.json when a folder name is clicked -- //
         // Check if the clicked element is a folder name (not the icon)
         if (!clickedElement.classList.contains('fa-folder') && !clickedElement.classList.contains('fa-folder-open')) {
             const parentLi = clickedElement.closest('li');
-            let folderPath = parentLi.getAttribute('data-path'); // Ensure you have folder path data attribute
+            let folderPath = parentLi.getAttribute('data-path');  // Get the folder path from the data-path attribute
 
             if (folderPath) {
                 // Convert the full path to a relative path starting from "Media"
@@ -309,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 console.log(`Folder path clicked (relative): ${folderPath}`); // Debugging message
 
-                // Make an AJAX call to update images.json based on the selected folder
+                // Make an AJAX call to update current_images.json based on the selected folder
                 fetch(`/update-images-json?folder=${encodeURIComponent(folderPath)}`)
                     .then(response => {
                         if (!response.ok) {
@@ -318,11 +317,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         return response.json();
                     })
                     .then(data => {
-                        // Update the main content area with the new images/videos from images.json
+                        console.log('Images received from server:', data);  // Log the images received
+                        // Update the gallery with the newly fetched data from current_images.json
                         updateGallery(data);
                     })
                     .catch(error => {
-                        console.error('Error updating images.json:', error);
+                        console.error('Error fetching current_images.json:', error);
                     });
             } else {
                 console.error('No folder path found');
@@ -350,11 +350,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Function to update the main content with images
+    // Function to update the main content with images from current_images.json
     function updateGallery(mediaFiles) {
         const gallery = document.querySelector('.gallery');
         gallery.innerHTML = '';  // Clear the content area
-    
+
         mediaFiles.forEach(file => {
             const img = document.createElement('img');
             img.src = file;
@@ -362,6 +362,22 @@ document.addEventListener('DOMContentLoaded', function() {
             gallery.appendChild(img);
         });
     }
+
+    // Fetch images for the root "Media" folder on initial page load
+    fetch('/update-images-json?folder=Media')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Images loaded on page load:', data);  // Log the loaded images for debugging
+            updateGallery(data);  // Populate the gallery with images from the root "Media" folder
+        })
+        .catch(error => {
+            console.error('Error fetching images for the root "Media" folder on page load:', error);
+        });
 
     // Call the function to populate the file tree
     populateFileTree();
