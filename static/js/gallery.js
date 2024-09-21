@@ -1,3 +1,16 @@
+window.addEventListener('load', function() {
+    // Gallery image loading code here
+    fetch('/update-images-json?folder=Media')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Images loaded on page load:', data);
+            updateGallery(data);  // This function updates the gallery
+        })
+        .catch(error => {
+            console.error('Error fetching gallery images:', error);
+        });
+});
+
 export function loadRootImages() {
     fetch('/update-images-json?folder=Media')
         .then(response => {
@@ -23,6 +36,7 @@ export function updateGallery(mediaFiles) {
         const img = document.createElement('img');
         img.src = file;
         img.classList.add('content-image');  // Add any styling here
+        img.setAttribute('loading', 'lazy');  // Enable lazy loading
         gallery.appendChild(img);
     });
 }
