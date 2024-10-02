@@ -1,5 +1,5 @@
 import { makeResizable } from './resizer.js';
-import { updateGallery } from './gallery.js';
+import { currentPage, totalPages, loadRootImages, updateGallery } from './gallery.js';
 import { collapseAll, expandAll, toggleFilesOption, toggleToSublevel } from './fileTree.js';  // Import the missing functions
 
 export function initializeEventListeners() {
@@ -7,6 +7,33 @@ export function initializeEventListeners() {
     attachDropdownListeners();
     attachFileTreeClickListener();
     attachFileTreeDropdownListener();
+    attachPaginationListeners();
+}
+
+function attachPaginationListeners() {
+    const pagination = document.getElementById('pagination');
+    pagination.addEventListener('click', function(event) {
+        event.preventDefault();
+        const target = event.target;
+
+        if (target.tagName === 'A' && target.classList.contains('prev')) {
+            if (currentPage > 1) {
+                currentPage--;
+                loadRootImages();
+            }
+        } else if (target.tagName === 'A' && target.classList.contains('next')) {
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadRootImages();
+            }
+        } else if (target.tagName === 'A' && !target.classList.contains('current')) {
+            const newPage = parseInt(target.textContent);
+            if (newPage) {
+                currentPage = newPage;
+                loadRootImages();
+            }
+        }
+    });
 }
 
 function attachDropdownListeners() {
