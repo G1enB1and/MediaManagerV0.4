@@ -49,8 +49,8 @@ body, html {
 
 .menu li {
     position: relative;
-    padding: 0 8px;  /* Adjusted padding for compactness */
-    line-height: 20px; /* Vertically center text */
+    padding: 2px;  /* Adjusted padding for compactness */
+    line-height: 16px; /* Vertically center text */
 }
 
 .menu a {
@@ -58,7 +58,7 @@ body, html {
     color: #d5d5d5;
     text-decoration: none;
     font-size: 13px;
-    line-height: 20px;  /* Ensure link text is vertically centered */
+    line-height: 16px;  /* Ensure link text is vertically centered */
 }
 
 .menu a:hover {
@@ -104,11 +104,11 @@ body, html {
     border: 1px solid #333;
     z-index: 1000;
     border-radius: 4px;
-    padding: 5px 0;
+    padding: 2px;
 }
 
 .dropdown-content a {
-    padding: 10px 15px;
+    padding: 2px;
     margin: 5px;
 }
 
@@ -169,16 +169,23 @@ body, html {
     overflow: hidden; /*I am trying this to get scrollbar in file tree, but I may need to undo it to allow main content to scroll or make a container inside maincontent that can scroll */
 }
 
+.gallery-container {
+    display: flex;
+    flex-direction: column; /* Ensure pagination sits below gallery */
+    flex: 1;
+    max-width: 100%;
+    overflow-y: auto;
+    height: 100%;
+}
+
 .gallery {
-    flex: 1; /* Ensures the gallery fills the content area */
+    flex: 1; /* Let gallery take available space */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 10px;
     padding: 10px;
     max-width: 100%;
-    overflow-y: auto; /* Ensures vertical scrolling */
     align-items: start;
-    height: 100%; /* Ensures the gallery fills the available space */
 }
 
 /* Style for each image */
@@ -191,7 +198,6 @@ body, html {
 
 /* Hover effect to slightly enlarge images */
 .gallery img:hover {
-    transform: scale(1.05);
     cursor: pointer;
 }
 
@@ -393,7 +399,7 @@ ul.file-tree > li.root-folder::after {
     border: none;
     color: #d5d5d5;
     cursor: pointer;
-    font-size: 18px; /* Slightly larger to make it visible */
+    font-size: 13px; /* Slightly larger to make it visible */
     padding: 5px;
 }
 
@@ -418,7 +424,7 @@ ul.file-tree > li.root-folder::after {
 }
 
 .file-tree-dropdown-content a {
-    padding: 10px 15px;
+    padding: 5px;
     color: #d5d5d5;
     text-decoration: none;
     display: block;
@@ -458,4 +464,78 @@ ul.file-tree > li.root-folder::after {
 .scroll-container {
     scrollbar-width: thin;
     scrollbar-color: #555555 #2f2f2f; /* thumb color, track color */
+}
+
+.pagination,
+.pagination * {
+  box-sizing: border-box;
+}
+
+.pagination {
+  display: flex;  /* Use flex to keep items in line */
+  justify-content: center;  /* Center the pagination */
+  align-items: center;  /* Align items vertically in the center */
+  flex-wrap: nowrap;  /* Prevent wrapping of items */
+  font-size: 12pt;
+  text-align: center;
+  margin: 1em 0;
+  padding: 0;  /* Remove any default padding */
+}
+
+.pagination ul {
+  list-style-type: none;  /* Remove bullets */
+  padding: 0;  /* Remove any default padding */
+  margin: 0;  /* Align correctly */
+  display: flex;  /* Ensure horizontal layout */
+  justify-content: center;  /* Center the pagination buttons */
+}
+
+.pagination ul li {
+  margin: 0 5px;  /* Spacing between buttons */
+}
+
+.pagination ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.pagination ul li a:hover:not(.current) {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+.pagination ul li.current a {
+  background-color: #007bff;
+  color: white;
+  cursor: default;
+}
+
+.pagination ul li.current a:hover {
+    background-color: #007bff;
+    color: white;
+    cursor: default;
+  }
+
+.pagination .prev,
+.pagination .next {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.pagination .prev:hover,
+.pagination .next:hover {
+  background-color: #0056b3;
+  color: white;
 }
