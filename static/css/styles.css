@@ -169,48 +169,72 @@ body, html {
     overflow: hidden; /*I am trying this to get scrollbar in file tree, but I may need to undo it to allow main content to scroll or make a container inside maincontent that can scroll */
 }
 
+/* Gallery container for a masonry layout */
 .gallery-container {
     display: flex;
-    flex-direction: column; /* Ensure pagination sits below gallery */
-    flex: 1;
+    flex-direction: column;
+    align-items: center;
     max-width: 100%;
-    overflow-y: auto;
     height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .gallery {
-    flex: 1; /* Let gallery take available space */
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 10px;
-    padding: 10px;
+    column-count: 4; /* Adjust for the number of columns */
+    column-gap: 10px; /* Horizontal gap between columns */
+    width: 100%;
     max-width: 100%;
-    align-items: start;
 }
 
-/* Style for each image */
-.gallery img {
-    width: 100%; /* makes image take full width of the column */
-    height: auto; /* maintains aspect ratio */
-    border-radius: 5px; /* optional: rounds the corners of the images */
-    transition: transform 0.2s; /* smooth transform effect on hover */
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+    background-color: #3d3d3d; /* Placeholder color */
+    overflow: hidden;
 }
 
-/* Hover effect to slightly enlarge images */
-.gallery img:hover {
-    cursor: pointer;
+.masonry-item img, .masonry-item video {
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
 }
 
-/* Media queries for responsive adjustments */
+.masonry-item img.loaded, .masonry-item video.loaded {
+    opacity: 1;
+}
+
+.masonry-item video {
+    object-fit: cover; /* Ensure video content fits correctly in placeholder */
+}
+
+/* Responsive media queries for masonry columns */
+@media (min-width: 1024px) {
+    .gallery {
+        column-count: 4; /* Higher column count for larger screens */
+    }
+}
+
+@media (max-width: 1024px) {
+    .gallery {
+        column-count: 3; /* Reduce number of columns for smaller screens */
+    }
+}
+
 @media (max-width: 768px) {
     .gallery {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        column-count: 2; /* Further reduce for tablet size */
     }
 }
 
 @media (max-width: 480px) {
     .gallery {
-        grid-template-columns: 1fr; /* single column view on small devices */
+        column-count: 1; /* Single column for mobile devices */
     }
 }
 

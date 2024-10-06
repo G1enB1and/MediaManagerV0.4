@@ -1,6 +1,6 @@
 // gallery.js
 export let currentPage = 1;
-const itemsPerPage = 60; 
+const itemsPerPage = 60;
 export let totalPages = 0;
 
 export function loadRootImages() {
@@ -27,23 +27,58 @@ export function updateGallery(mediaFiles, page = 1) {
 
     const start = (page - 1) * itemsPerPage;
     const end = Math.min(start + itemsPerPage, mediaFiles.length);
+
+    let itemsLoaded = 0;
+    const totalItems = end - start;
+
     mediaFiles.slice(start, end).forEach(file => {
-        const img = document.createElement('img');
-        img.src = file;
-        img.classList.add('content-image');
-        img.setAttribute('loading', 'lazy');
-        gallery.appendChild(img);
+        const item = document.createElement('div');
+        item.classList.add('masonry-item');
+
+        let mediaElement;
+        if (file.endsWith('.mp4') || file.endsWith('.mov') || file.endsWith('.avi') || file.endsWith('.mkv')) {
+            mediaElement = document.createElement('video');
+            mediaElement.src = file;
+            mediaElement.controls = true;
+        } else {
+            mediaElement = document.createElement('img');
+            mediaElement.src = file;
+        }
+
+        mediaElement.classList.add('lazy-media');
+        mediaElement.setAttribute('loading', 'lazy');
+        mediaElement.style.opacity = '0';  // Set initial opacity to 0
+        item.appendChild(mediaElement);
+        gallery.appendChild(item);
+
+        // Event listener to track when each media is loaded
+        const onLoadHandler = () => {
+            itemsLoaded++;
+            if (itemsLoaded === totalItems) {
+                fadeInLoadedItems();
+            }
+        };
+
+        mediaElement.onload = onLoadHandler;
+        mediaElement.onloadeddata = onLoadHandler;  // For video elements
     });
+
+    function fadeInLoadedItems() {
+        document.querySelectorAll('.lazy-media').forEach(media => {
+            media.style.transition = 'opacity 0.5s ease';
+            media.style.opacity = '1';
+        });
+    }
 }
 
 export function renderPagination(totalPages) {
     const pagination = document.getElementById('pagination');
-    pagination.innerHTML = ''; 
+    pagination.innerHTML = '';
 
     // Previous button
     if (currentPage > 1) {
         const prevButton = document.createElement('a');
-        prevButton.innerHTML = '&lt;';  // Original left arrow symbol
+        prevButton.innerHTML = '&lt;';
         prevButton.href = '#';
         prevButton.classList.add('prev');
         prevButton.onclick = (e) => {
@@ -58,16 +93,14 @@ export function renderPagination(totalPages) {
     pagination.appendChild(ul);
 
     if (totalPages <= 7) {
-        // Show all pages if total pages <= 7
         for (let i = 1; i <= totalPages; i++) {
             ul.appendChild(createPageButton(i));
         }
     } else {
-        ul.appendChild(createPageButton(1)); // First page
-
+        ul.appendChild(createPageButton(1));
         if (currentPage > 4) {
             const li = document.createElement('li');
-            li.textContent = '...'; // Ellipsis
+            li.textContent = '...';
             ul.appendChild(li);
         }
 
@@ -80,17 +113,17 @@ export function renderPagination(totalPages) {
 
         if (currentPage < totalPages - 2) {
             const li = document.createElement('li');
-            li.textContent = '...'; // Ellipsis
+            li.textContent = '...';
             ul.appendChild(li);
         }
 
-        ul.appendChild(createPageButton(totalPages)); // Last page
+        ul.appendChild(createPageButton(totalPages));
     }
 
     // Next button
     if (currentPage < totalPages) {
         const nextButton = document.createElement('a');
-        nextButton.innerHTML = '&gt;';  // Original right arrow symbol
+        nextButton.innerHTML = '&gt;';
         nextButton.href = '#';
         nextButton.classList.add('next');
         nextButton.onclick = (e) => {

@@ -13,22 +13,22 @@ export function initializeEventListeners() {
 
 function attachPaginationListeners() {
     const pagination = document.getElementById('pagination');
-    pagination.addEventListener('click', function(event) {
+    pagination.addEventListener('click', function (event) {
         event.preventDefault();
         const target = event.target;
 
         if (target.tagName === 'A' && target.classList.contains('prev')) {
             if (currentPage > 1) {
-                currentPage--;
+                currentPage--;  // Updated the pagination logic to modify currentPage
                 loadRootImages();
             }
         } else if (target.tagName === 'A' && target.classList.contains('next')) {
             if (currentPage < totalPages) {
-                currentPage++;
+                currentPage++;  // Updated the pagination logic to modify currentPage
                 loadRootImages();
             }
         } else if (target.tagName === 'A' && !target.classList.contains('current')) {
-            const newPage = parseInt(target.textContent);
+            let newPage = parseInt(target.textContent);  // Use 'let' to allow reassignment here
             if (newPage) {
                 currentPage = newPage;
                 loadRootImages();
