@@ -79,6 +79,7 @@ export function updateGallery(mediaFiles, page = 1) {
     });
 }
 
+
 export function renderPagination(totalPages) {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
