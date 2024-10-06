@@ -25,13 +25,22 @@ export function updateGallery(mediaFiles, page = 1) {
     const gallery = document.querySelector('.gallery');
     gallery.innerHTML = '';
 
+    // Create masonry columns (adjust the number of columns as needed)
+    const columnCount = 4;
+    const masonryColumns = [];
+
+    for (let i = 0; i < columnCount; i++) {
+        const column = document.createElement('div');
+        column.classList.add('masonry-column');
+        masonryColumns.push(column);
+        gallery.appendChild(column);
+    }
+
+    // Distribute the items into columns for masonry effect
     const start = (page - 1) * itemsPerPage;
     const end = Math.min(start + itemsPerPage, mediaFiles.length);
 
-    let itemsLoaded = 0;
-    const totalItems = end - start;
-
-    mediaFiles.slice(start, end).forEach(file => {
+    mediaFiles.slice(start, end).forEach((file, index) => {
         const item = document.createElement('div');
         item.classList.add('masonry-item');
 
@@ -40,35 +49,34 @@ export function updateGallery(mediaFiles, page = 1) {
             mediaElement = document.createElement('video');
             mediaElement.src = file;
             mediaElement.controls = true;
+            mediaElement.preload = 'metadata';
+
+            mediaElement.onloadedmetadata = () => {
+                mediaElement.classList.add('loaded');
+            };
+
+            mediaElement.onerror = () => {
+                console.error('Error loading video:', file);
+            };
         } else {
             mediaElement = document.createElement('img');
             mediaElement.src = file;
+
+            mediaElement.onload = () => {
+                mediaElement.classList.add('loaded');
+            };
+
+            mediaElement.onerror = () => {
+                console.error('Error loading image:', file);
+            };
         }
 
         mediaElement.classList.add('lazy-media');
-        mediaElement.setAttribute('loading', 'lazy');
-        mediaElement.style.opacity = '0';  // Set initial opacity to 0
         item.appendChild(mediaElement);
-        gallery.appendChild(item);
 
-        // Event listener to track when each media is loaded
-        const onLoadHandler = () => {
-            itemsLoaded++;
-            if (itemsLoaded === totalItems) {
-                fadeInLoadedItems();
-            }
-        };
-
-        mediaElement.onload = onLoadHandler;
-        mediaElement.onloadeddata = onLoadHandler;  // For video elements
+        // Append item to one of the masonry columns in a round-robin fashion
+        masonryColumns[index % columnCount].appendChild(item);
     });
-
-    function fadeInLoadedItems() {
-        document.querySelectorAll('.lazy-media').forEach(media => {
-            media.style.transition = 'opacity 0.5s ease';
-            media.style.opacity = '1';
-        });
-    }
 }
 
 export function renderPagination(totalPages) {

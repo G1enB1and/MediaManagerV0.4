@@ -171,70 +171,64 @@ body, html {
 
 /* Gallery container for a masonry layout */
 .gallery-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 100%;
+    width: 100%;
     height: 100%;
-    overflow-y: auto;
     padding: 10px;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .gallery {
-    column-count: 4; /* Adjust for the number of columns */
-    column-gap: 10px; /* Horizontal gap between columns */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px; /* Consistent horizontal gap between columns */
     width: 100%;
     max-width: 100%;
 }
 
+.masonry-column {
+    flex: 1;
+    min-width: 200px; /* Set a minimum width to ensure multiple columns */
+}
+
 .masonry-item {
-    break-inside: avoid;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Consistent vertical gap */
     position: relative;
-    width: 100%;
-    background-color: #3d3d3d; /* Placeholder color */
     overflow: hidden;
+    background-color: #3d3d3d; /* Placeholder color */
 }
 
-.masonry-item img, .masonry-item video {
-    width: 100%;
-    height: auto;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 1;
-}
-
-.masonry-item img.loaded, .masonry-item video.loaded {
-    opacity: 1;
-}
-
+.masonry-item img,
 .masonry-item video {
-    object-fit: cover; /* Ensure video content fits correctly in placeholder */
+    width: 100%;
+    height: auto; /* Maintain the original aspect ratio */
+    opacity: 0; /* Start with 0 to fade in */
+    transition: opacity 0.5s ease-in-out;
+    object-fit: cover;
+}
+
+.masonry-item img.loaded,
+.masonry-item video.loaded {
+    opacity: 1; /* Fade in when loaded */
 }
 
 /* Responsive media queries for masonry columns */
-@media (min-width: 1024px) {
-    .gallery {
-        column-count: 4; /* Higher column count for larger screens */
-    }
-}
-
 @media (max-width: 1024px) {
-    .gallery {
-        column-count: 3; /* Reduce number of columns for smaller screens */
+    .masonry-column {
+        min-width: calc(100% / 3 - 10px);
     }
 }
 
 @media (max-width: 768px) {
-    .gallery {
-        column-count: 2; /* Further reduce for tablet size */
+    .masonry-column {
+        min-width: calc(100% / 2 - 10px);
     }
 }
 
 @media (max-width: 480px) {
-    .gallery {
-        column-count: 1; /* Single column for mobile devices */
+    .masonry-column {
+        min-width: calc(100% - 10px); /* Single column for mobile devices */
     }
 }
 

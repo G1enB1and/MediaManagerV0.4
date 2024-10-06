@@ -11,7 +11,7 @@ export function initializeEventListeners() {
     attachPaginationListeners();
 }
 
-function attachPaginationListeners() {
+export function attachPaginationListeners() {
     const pagination = document.getElementById('pagination');
     pagination.addEventListener('click', function (event) {
         event.preventDefault();
@@ -19,16 +19,16 @@ function attachPaginationListeners() {
 
         if (target.tagName === 'A' && target.classList.contains('prev')) {
             if (currentPage > 1) {
-                currentPage--;  // Updated the pagination logic to modify currentPage
+                currentPage--;  // Update current page
                 loadRootImages();
             }
         } else if (target.tagName === 'A' && target.classList.contains('next')) {
             if (currentPage < totalPages) {
-                currentPage++;  // Updated the pagination logic to modify currentPage
+                currentPage++;  // Update current page
                 loadRootImages();
             }
         } else if (target.tagName === 'A' && !target.classList.contains('current')) {
-            let newPage = parseInt(target.textContent);  // Use 'let' to allow reassignment here
+            let newPage = parseInt(target.textContent);  // Use 'let' for reassignment
             if (newPage) {
                 currentPage = newPage;
                 loadRootImages();
