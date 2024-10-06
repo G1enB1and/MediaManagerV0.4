@@ -1,3 +1,4 @@
+//events.js
 import { makeResizable } from './resizer.js';
 import { currentPage, totalPages, loadRootImages, updateGallery } from './gallery.js';
 import { collapseAll, expandAll, toggleFilesOption, toggleToSublevel } from './fileTree.js';  // Import the missing functions
