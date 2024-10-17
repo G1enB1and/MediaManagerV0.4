@@ -53,7 +53,9 @@ export function updateGallery(mediaFiles, page = 1) {
 
             mediaElement.onloadedmetadata = () => {
                 mediaElement.classList.add('loaded');
-                item.style.height = `${mediaElement.videoHeight * (item.offsetWidth / mediaElement.videoWidth)}px`;  // Set height based on video aspect ratio
+                // Dynamically calculate and set the height based on aspect ratio
+                const aspectRatio = mediaElement.videoHeight / mediaElement.videoWidth;
+                item.style.height = `${item.offsetWidth * aspectRatio}px`;
             };
 
             mediaElement.onerror = () => {
@@ -65,7 +67,9 @@ export function updateGallery(mediaFiles, page = 1) {
 
             mediaElement.onload = () => {
                 mediaElement.classList.add('loaded');
-                item.style.height = `${mediaElement.naturalHeight * (item.offsetWidth / mediaElement.naturalWidth)}px`;  // Set height based on image aspect ratio
+                // Dynamically calculate and set the height based on aspect ratio
+                const aspectRatio = mediaElement.naturalHeight / mediaElement.naturalWidth;
+                item.style.height = `${item.offsetWidth * aspectRatio}px`;
             };
 
             mediaElement.onerror = () => {
@@ -77,12 +81,12 @@ export function updateGallery(mediaFiles, page = 1) {
         item.appendChild(mediaElement);
 
         // Append item to one of the masonry columns in a round-robin fashion
-        // Set a default placeholder height, e.g., 200px for square placeholders
-        item.style.height = `${item.offsetWidth * 0.75}px`;  // Default to 4:3 ratio until the media loads
+        // Initially set the height to the width (1:1 ratio) until the image loads
+        item.style.height = `${item.offsetWidth}px`;
+        
         masonryColumns[index % columnCount].appendChild(item);
     });
 }
-
 
 export function renderPagination(totalPages) {
     const pagination = document.getElementById('pagination');
@@ -173,3 +177,12 @@ function updatePage(newPage) {
     const galleryContainer = document.querySelector('.gallery-container');
     galleryContainer.scrollTop = 0;
 }
+
+window.addEventListener('resize', () => {
+    const loadedItems = document.querySelectorAll('.masonry-item img.loaded, .masonry-item video.loaded');
+    loadedItems.forEach((item) => {
+        const container = item.closest('.masonry-item');
+        const aspectRatio = item.naturalHeight / item.naturalWidth || item.videoHeight / item.videoWidth;
+        container.style.height = `${container.offsetWidth * aspectRatio}px`;
+    });
+});

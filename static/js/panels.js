@@ -14,6 +14,9 @@ export function toggleLeftPanel() {
         resizer.style.display = 'block';
         icon.src = 'static/images/sidebar-regular-white.png';
     }
+
+    // Recalculate the height of each loaded item (images/videos) after showing/hiding the left panel
+    recalculateItemHeights();
 }
 
 export function toggleRightPanel() {
@@ -40,4 +43,16 @@ export function toggleRightPanel() {
         contentArea.style.width = `calc(100% - ${leftPanelWidth + 351}px)`;
         icon.src = 'static/images/sidebar-flip-regular-white.png';
     }
+
+    // Recalculate the height of each loaded item (images/videos) after showing/hiding the right panel
+    recalculateItemHeights();
+}
+
+function recalculateItemHeights() {
+    const loadedItems = document.querySelectorAll('.masonry-item img.loaded, .masonry-item video.loaded');
+    loadedItems.forEach((item) => {
+        const container = item.closest('.masonry-item');
+        const aspectRatio = item.naturalHeight / item.naturalWidth || item.videoHeight / item.videoWidth;
+        container.style.height = `${container.offsetWidth * aspectRatio}px`;
+    });
 }

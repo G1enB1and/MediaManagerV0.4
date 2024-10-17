@@ -33,6 +33,9 @@ export function makeResizable() {
                         const leftPanelWidth = leftPanelContainer.getBoundingClientRect().width;
                         contentArea.style.width = `calc(100% - ${leftPanelWidth + newWidth}px)`;
                     }
+
+                    // Recalculate the height of each loaded item (images/videos) after resizing
+                    recalculateItemHeights();
                 }
             }
 
@@ -48,4 +51,13 @@ export function makeResizable() {
 
     initResizer(leftResizer, 'left');
     initResizer(rightResizer, 'right');
+}
+
+function recalculateItemHeights() {
+    const loadedItems = document.querySelectorAll('.masonry-item img.loaded, .masonry-item video.loaded');
+    loadedItems.forEach((item) => {
+        const container = item.closest('.masonry-item');
+        const aspectRatio = item.naturalHeight / item.naturalWidth || item.videoHeight / item.videoWidth;
+        container.style.height = `${container.offsetWidth * aspectRatio}px`;
+    });
 }
