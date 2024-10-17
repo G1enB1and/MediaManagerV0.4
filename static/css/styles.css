@@ -196,6 +196,7 @@ body, html {
     margin-bottom: 10px; /* Consistent vertical gap */
     position: relative;
     overflow: hidden;
+    border-radius: 9px;
 }
 
 .masonry-item img,
@@ -206,6 +207,7 @@ body, html {
     transition: opacity 0.5s ease-in-out;
     object-fit: cover;
     background-color: #3d3d3d; /* Placeholder background color */
+    border-radius: 9px;
 }
 
 .masonry-item img.loaded,
@@ -558,4 +560,34 @@ ul.file-tree > li.root-folder::after {
 .pagination .next:hover {
   background-color: #0056b3;
   color: white;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    top: 40px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    z-index: 9999; /* Ensure it floats above everything */
+    width: 220px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.toast.show {
+    opacity: 1; /* Show the toast when needed */
+}
+
+.toast .progress-bar {
+    height: 5px;
+    background: linear-gradient(to right, #00ff00, #008000); /* Green gradient */
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
+    width: 0; /* Start at 0% width and grow */
+    margin-top: 5px;
 }

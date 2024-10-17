@@ -29,6 +29,35 @@ export function updateGallery(mediaFiles, page = 1) {
     const columnCount = 4;
     const masonryColumns = [];
 
+    // Toast notification elements
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    const progressBar = document.getElementById('progress-bar');
+
+    // Total number of images to load
+    const totalImages = mediaFiles.length;
+    let imagesLoaded = 0;
+
+    // Display the toast notification
+    function showToast() {
+        toast.classList.add('show');
+    }
+
+    // Update the toast message and progress bar
+    function updateToast() {
+        const percentage = (imagesLoaded / totalImages) * 100;
+        toastMessage.textContent = `Loading image ${imagesLoaded} out of ${totalImages}`;
+        progressBar.style.width = `${percentage}%`;
+    }
+
+    // Hide the toast notification when loading is complete
+    function hideToast() {
+        toast.classList.remove('show');
+    }
+
+    // Show the toast when the gallery starts loading
+    showToast();
+
     for (let i = 0; i < columnCount; i++) {
         const column = document.createElement('div');
         column.classList.add('masonry-column');
@@ -56,10 +85,18 @@ export function updateGallery(mediaFiles, page = 1) {
                 // Dynamically calculate and set the height based on aspect ratio
                 const aspectRatio = mediaElement.videoHeight / mediaElement.videoWidth;
                 item.style.height = `${item.offsetWidth * aspectRatio}px`;
+                imagesLoaded++;
+                updateToast();
+
+                if (imagesLoaded === totalImages) {
+                    hideToast();  // Hide the toast once all images are loaded
+                }
             };
 
             mediaElement.onerror = () => {
                 console.error('Error loading video:', file);
+                imagesLoaded++;
+                updateToast();
             };
         } else {
             mediaElement = document.createElement('img');
@@ -70,10 +107,18 @@ export function updateGallery(mediaFiles, page = 1) {
                 // Dynamically calculate and set the height based on aspect ratio
                 const aspectRatio = mediaElement.naturalHeight / mediaElement.naturalWidth;
                 item.style.height = `${item.offsetWidth * aspectRatio}px`;
+                imagesLoaded++;
+                updateToast();
+
+                if (imagesLoaded === totalImages) {
+                    hideToast();  // Hide the toast once all images are loaded
+                }
             };
 
             mediaElement.onerror = () => {
                 console.error('Error loading image:', file);
+                imagesLoaded++;
+                updateToast();
             };
         }
 
