@@ -53,6 +53,7 @@ export function updateGallery(mediaFiles, page = 1) {
 
             mediaElement.onloadedmetadata = () => {
                 mediaElement.classList.add('loaded');
+                item.style.height = `${mediaElement.videoHeight * (item.offsetWidth / mediaElement.videoWidth)}px`;  // Set height based on video aspect ratio
             };
 
             mediaElement.onerror = () => {
@@ -64,6 +65,7 @@ export function updateGallery(mediaFiles, page = 1) {
 
             mediaElement.onload = () => {
                 mediaElement.classList.add('loaded');
+                item.style.height = `${mediaElement.naturalHeight * (item.offsetWidth / mediaElement.naturalWidth)}px`;  // Set height based on image aspect ratio
             };
 
             mediaElement.onerror = () => {
@@ -75,6 +77,8 @@ export function updateGallery(mediaFiles, page = 1) {
         item.appendChild(mediaElement);
 
         // Append item to one of the masonry columns in a round-robin fashion
+        // Set a default placeholder height, e.g., 200px for square placeholders
+        item.style.height = `${item.offsetWidth * 0.75}px`;  // Default to 4:3 ratio until the media loads
         masonryColumns[index % columnCount].appendChild(item);
     });
 }
@@ -164,4 +168,8 @@ function createPageButton(page) {
 function updatePage(newPage) {
     currentPage = newPage;
     loadRootImages();
+
+    // Scroll to the top of the gallery container
+    const galleryContainer = document.querySelector('.gallery-container');
+    galleryContainer.scrollTop = 0;
 }

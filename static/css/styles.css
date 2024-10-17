@@ -196,7 +196,6 @@ body, html {
     margin-bottom: 10px; /* Consistent vertical gap */
     position: relative;
     overflow: hidden;
-    background-color: #3d3d3d; /* Placeholder color */
 }
 
 .masonry-item img,
@@ -206,11 +205,13 @@ body, html {
     opacity: 0; /* Start with 0 to fade in */
     transition: opacity 0.5s ease-in-out;
     object-fit: cover;
+    background-color: #3d3d3d; /* Placeholder background color */
 }
 
 .masonry-item img.loaded,
 .masonry-item video.loaded {
     opacity: 1; /* Fade in when loaded */
+    background-color: transparent; /* Remove the placeholder background */
 }
 
 /* Responsive media queries for masonry columns */
