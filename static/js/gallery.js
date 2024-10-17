@@ -34,8 +34,10 @@ export function updateGallery(mediaFiles, page = 1) {
     const toastMessage = document.getElementById('toast-message');
     const progressBar = document.getElementById('progress-bar');
 
-    // Total number of images to load
-    const totalImages = mediaFiles.length;
+    // Get the total number of images to load initially (maximum 60 for pagination)
+    const start = (page - 1) * itemsPerPage;
+    const end = Math.min(start + itemsPerPage, mediaFiles.length);
+    const imagesToLoad = mediaFiles.slice(start, end).length;
     let imagesLoaded = 0;
 
     // Display the toast notification
@@ -45,8 +47,8 @@ export function updateGallery(mediaFiles, page = 1) {
 
     // Update the toast message and progress bar
     function updateToast() {
-        const percentage = (imagesLoaded / totalImages) * 100;
-        toastMessage.textContent = `Loading image ${imagesLoaded} out of ${totalImages}`;
+        const percentage = (imagesLoaded / imagesToLoad) * 100;
+        toastMessage.textContent = `Loading image ${imagesLoaded} out of ${imagesToLoad}`;
         progressBar.style.width = `${percentage}%`;
     }
 
@@ -58,16 +60,13 @@ export function updateGallery(mediaFiles, page = 1) {
     // Show the toast when the gallery starts loading
     showToast();
 
+    // Create masonry columns
     for (let i = 0; i < columnCount; i++) {
         const column = document.createElement('div');
         column.classList.add('masonry-column');
         masonryColumns.push(column);
         gallery.appendChild(column);
     }
-
-    // Distribute the items into columns for masonry effect
-    const start = (page - 1) * itemsPerPage;
-    const end = Math.min(start + itemsPerPage, mediaFiles.length);
 
     mediaFiles.slice(start, end).forEach((file, index) => {
         const item = document.createElement('div');
@@ -88,7 +87,7 @@ export function updateGallery(mediaFiles, page = 1) {
                 imagesLoaded++;
                 updateToast();
 
-                if (imagesLoaded === totalImages) {
+                if (imagesLoaded === imagesToLoad) {
                     hideToast();  // Hide the toast once all images are loaded
                 }
             };
@@ -110,7 +109,7 @@ export function updateGallery(mediaFiles, page = 1) {
                 imagesLoaded++;
                 updateToast();
 
-                if (imagesLoaded === totalImages) {
+                if (imagesLoaded === imagesToLoad) {
                     hideToast();  // Hide the toast once all images are loaded
                 }
             };
@@ -131,6 +130,10 @@ export function updateGallery(mediaFiles, page = 1) {
         
         masonryColumns[index % columnCount].appendChild(item);
     });
+
+    // Set the initial progress bar state and message
+    toastMessage.textContent = `Loading image 0 out of ${imagesToLoad}`;
+    progressBar.style.width = '0%';  // Start progress bar at 0%
 }
 
 export function renderPagination(totalPages) {
