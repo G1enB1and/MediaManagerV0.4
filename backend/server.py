@@ -1,15 +1,22 @@
-from http.server import SimpleHTTPRequestHandler, HTTPServer
+from http.server import SimpleHTTPRequestHandler
+from socketserver import ThreadingMixIn
+from http.server import HTTPServer
 import urllib.parse
 import json
 import os
 import logging
 import random
+from generate_images_json import get_images_from_folders, write_current_images_json
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Define the root directory relative to this script file
 ROOT_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
+
+class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
+    """Handle requests in a separate thread."""
+    
 class CustomHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         logging.debug(f"Received GET on path: {self.path}")
@@ -25,8 +32,38 @@ class CustomHandler(SimpleHTTPRequestHandler):
         else:
             # Serve files directly based on their path
             SimpleHTTPRequestHandler.do_GET(self)
-    
+
+    def do_POST(self):
+        parsed_path = urllib.parse.urlparse(self.path)
+        path = parsed_path.path
+
+        if path == '/update-images-json':
+            self.handle_update_images_json_post()
+        else:
+            self.send_error(404, 'Endpoint not found')
+
+    def handle_update_images_json_post(self):
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        request_data = json.loads(post_data)
+
+        # Extract the list of folders from the request
+        folders = request_data.get('folders', [])
+
+        logging.debug(f"Received folders: {folders}")
+        
+        # Write the selected folders to current_images.json
+        write_current_images_json(folders)
+
+        # Respond with the selected images
+        selected_images = get_images_from_folders(folders)
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps(selected_images).encode('utf-8'))
+
     def serve_file(self, filename):
+        """Serve static files like index.html."""
         filepath = os.path.join(ROOT_FOLDER, filename)
         if os.path.exists(filepath):
             self.send_response(200)
@@ -85,7 +122,9 @@ class CustomHandler(SimpleHTTPRequestHandler):
                     media_files.append(relative_path)
         return media_files
 
+# Start the server
 PORT = 8000
-with HTTPServer(('localhost', PORT), CustomHandler) as httpd:
-    print(f"Server running at http://localhost:{PORT}")
-    httpd.serve_forever()
+server = ThreadingHTTPServer(('localhost', PORT), CustomHandler)
+server.timeout = 60  # Increase timeout
+print(f"Server running at http://localhost:{PORT}")
+server.serve_forever()

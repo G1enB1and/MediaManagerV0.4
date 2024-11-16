@@ -3,13 +3,158 @@ import { makeResizable } from './resizer.js';
 import { currentPage, totalPages, loadRootImages, updateGallery } from './gallery.js';
 import { collapseAll, expandAll, toggleFilesOption, toggleToSublevel } from './fileTree.js';  // Import the missing functions
 
+let selectedFolders = new Set();  // Track the selected folders
+
 export function initializeEventListeners() {
     makeResizable();
     attachDropdownListeners();
     attachFileTreeClickListener();
     attachFileTreeDropdownListener();
     attachPaginationListeners();
+
+    // Load the root folder (Media) by default when the page loads
+    loadRootFolder();
 }
+
+function loadRootFolder() {
+    const rootFolder = 'Media';
+    selectedFolders.clear();  // Clear previous selections
+    selectedFolders.add(rootFolder);  // Add the root folder to the selection
+
+    // Fetch images for the root folder
+    notifyGalleryUpdate();
+}
+
+function attachFileTreeClickListener() {
+    const fileTreeContainer = document.getElementById('fileTree');
+
+    fileTreeContainer.addEventListener('click', function(event) {
+        const clickedElement = event.target;
+
+        // Handle folder name clicks (not the icon)
+        if (!clickedElement.classList.contains('fa-folder') && !clickedElement.classList.contains('fa-folder-open')) {
+            const parentLi = clickedElement.closest('li');
+            let folderPath = parentLi.getAttribute('data-path');
+
+            if (folderPath) {
+                if (folderPath === 'Media') {
+                    // If the root folder ("Media") is clicked
+                    selectedFolders.clear();
+                    selectedFolders.add('Media');  // Select the root folder
+                    notifyGalleryUpdate(); // call before normalizing paths for root directory.
+                } else {
+                    folderPath = normalizeFolderPath(folderPath);
+
+                    // Detect if Ctrl is pressed
+                    if (event.ctrlKey) {
+                        console.log('Ctrl+Click detected');  // Debug log
+                        // Handle multi-selection by adding/removing from selectedFolders
+                        if (selectedFolders.has(folderPath)) {
+                            selectedFolders.delete(folderPath);  // Unselect if already selected
+                            parentLi.classList.remove('selected-folder');  // Unhighlight
+                        } else {
+                            selectedFolders.add(folderPath);  // Add to selection
+                            parentLi.classList.add('selected-folder');  // Highlight
+                        }
+                    } else {
+                        // Normal click behavior (clears selection and selects clicked folder)
+                        clearFolderSelection();
+                        selectedFolders.clear();
+                        selectedFolders.add(folderPath);
+                        parentLi.classList.add('selected-folder');
+                    }
+                }
+
+                // update the gallery for the selected folders
+                notifyGalleryUpdate();
+                
+            } else {
+                console.error('No folder path found');
+            }
+        }
+
+        // Handle folder icon clicks (expansion/collapse)
+        if (clickedElement.classList.contains('fa-folder') || clickedElement.classList.contains('fa-folder-open')) {
+            toggleFolder(clickedElement);
+        }
+    });
+}
+
+// Clear previously selected folders' background
+function clearFolderSelection() {
+    document.querySelectorAll('.selected-folder').forEach(li => {
+        li.classList.remove('selected-folder');  // Remove the highlight
+    });
+}
+
+// Notify events.js to update the gallery
+function notifyGalleryUpdate() {
+    const folderPaths = Array.from(selectedFolders);  // Convert set to array
+    const event = new CustomEvent('folderSelected', { detail: folderPaths });
+    window.dispatchEvent(event);  // Dispatch the custom event
+}
+
+// Normalize the folder path (assumes "Media/" is the root for media files)
+function normalizeFolderPath(folderPath) {
+    const mediaIndex = folderPath.indexOf('Media/');
+    if (mediaIndex !== -1) {
+        folderPath = folderPath.substring(mediaIndex + 'Media/'.length);  // Strip "Media/"
+    }
+    return folderPath.replace(/^\/|\/$/g, '');  // Trim leading/trailing slashes
+}
+
+function updateCurrentImagesJson(folderPaths) {
+    // Call the backend to update current_images.json with images from selected folders
+    fetch(`/update-images-json`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ folders: folderPaths })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Updated current_images.json with images from folders:', data);
+        // Update the gallery with the new images
+        updateGallery(data, 1);  // Reset to page 1
+    })
+    .catch(error => {
+        console.error('Error updating current_images.json:', error);
+    });
+}
+
+// Listen for the custom event from fileTree.js to update the gallery
+window.addEventListener('folderSelected', function(event) {
+    const folderPaths = event.detail;
+    console.log('Custom event detected: folderSelected with paths:', folderPaths);
+
+    // Call the function to update images based on selected folders
+    updateCurrentImagesJson(folderPaths);
+});
+
+/* no longer used */
+/*
+// Fetch and update gallery for selected folders
+function updateGalleryForSelectedFolders(folderPaths) {
+    console.log('Folder paths being sent to backend:', folderPaths);
+
+    fetch(`/update-images-json`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ folders: folderPaths })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Gallery updated with images:', data);
+        updateGallery(data, 1);  // Reset to page 1
+    })
+    .catch(error => {
+        console.error('Error updating gallery for selected folders:', error);
+    });
+}
+*/
 
 export function attachPaginationListeners() {
     const pagination = document.getElementById('pagination');
@@ -43,47 +188,6 @@ function attachDropdownListeners() {
     });
 
     document.addEventListener('click', closeDropdowns);
-}
-
-function attachFileTreeClickListener() {
-    const fileTreeContainer = document.getElementById('fileTree');
-
-    fileTreeContainer.addEventListener('click', function(event) {
-        const clickedElement = event.target;
-
-        // Handle folder name clicks
-        if (!clickedElement.classList.contains('fa-folder') && !clickedElement.classList.contains('fa-folder-open')) {
-            const parentLi = clickedElement.closest('li');
-            let folderPath = parentLi.getAttribute('data-path');
-
-            if (folderPath) {
-                folderPath = normalizeFolderPath(folderPath);
-
-                // Fetch images for the clicked folder
-                fetch(`/update-images-json?folder=${encodeURIComponent(folderPath)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Images received from server:', data);
-                        updateGallery(data);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching current_images.json:', error);
-                    });
-            } else {
-                console.error('No folder path found');
-            }
-        }
-
-        // Handle folder icon clicks
-        if (clickedElement.classList.contains('fa-folder') || clickedElement.classList.contains('fa-folder-open')) {
-            toggleFolder(clickedElement);
-        }
-    });
 }
 
 function attachFileTreeDropdownListener() {
@@ -170,11 +274,4 @@ function toggleFolder(icon) {
     }
 }
 
-function normalizeFolderPath(folderPath) {
-    const mediaIndex = folderPath.indexOf('Media/');
-    if (mediaIndex !== -1) {
-        folderPath = folderPath.substring(mediaIndex);
-    }
 
-    return folderPath.replace(/^\/|\/$/g, '');  // Trim leading/trailing slashes
-}

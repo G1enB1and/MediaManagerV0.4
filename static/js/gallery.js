@@ -68,7 +68,9 @@ export function updateGallery(mediaFiles, page = 1) {
         gallery.appendChild(column);
     }
 
-    mediaFiles.slice(start, end).forEach((file, index) => {
+    mediaFiles.slice(start, end).forEach((fileObj, index) => {
+        const file = fileObj.path;  // Use fileObj.path to access the actual file path
+
         const item = document.createElement('div');
         item.classList.add('masonry-item');
 

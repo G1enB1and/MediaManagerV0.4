@@ -1,5 +1,21 @@
 let showFoldersOnly = false;  // Track if only folders should be shown
 
+function toggleFolder(icon) {
+    const parentLi = icon.closest('li');
+    const subList = parentLi.querySelector('ul');
+    const isExpanded = parentLi.getAttribute('data-expanded') === 'true';
+
+    if (isExpanded) {
+        subList.style.display = 'none';
+        icon.className = 'fa-regular fa-folder';  // Change to closed folder icon
+        parentLi.setAttribute('data-expanded', 'false');
+    } else {
+        subList.style.display = 'block';
+        icon.className = 'fa-regular fa-folder-open';  // Change to open folder icon
+        parentLi.setAttribute('data-expanded', 'true');
+    }
+}
+
 export function toggleFilesOption() {
     showFoldersOnly = !showFoldersOnly;
 

@@ -329,6 +329,12 @@ body, html {
     margin-left: 5px;
 }
 
+/* Highlight selected folders */
+.selected-folder {
+    background-color: #007bff; /* Blue highlight for selected folder */
+    color: white; /* Ensure the text is visible against the blue background */
+}
+
 /* File tree styles */
 ul.file-tree {
     list-style-type: none;
