@@ -3,6 +3,8 @@
 images.json
 current_images.json
 all_images.json
+/static/current_images.json
+/static/all_images.json
 file_tree.json
 notes.txt
 

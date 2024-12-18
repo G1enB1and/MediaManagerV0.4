@@ -331,8 +331,8 @@ body, html {
 
 /* Highlight selected folders */
 .selected-folder {
-    background-color: #007bff; /* Blue highlight for selected folder */
-    color: white; /* Ensure the text is visible against the blue background */
+    font-weight: bold; /* Blue highlight for selected folder */
+    color: #007bff; /* Ensure the text is visible against the blue background */
 }
 
 /* File tree styles */

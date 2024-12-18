@@ -17,7 +17,7 @@ export function initializeEventListeners() {
 }
 
 function loadRootFolder() {
-    const rootFolder = 'Media';
+    const rootFolder = '';
     selectedFolders.clear();  // Clear previous selections
     selectedFolders.add(rootFolder);  // Add the root folder to the selection
 
@@ -39,8 +39,9 @@ function attachFileTreeClickListener() {
             if (folderPath) {
                 if (folderPath === 'Media') {
                     // If the root folder ("Media") is clicked
+                    clearFolderSelection();
                     selectedFolders.clear();
-                    selectedFolders.add('Media');  // Select the root folder
+                    selectedFolders.add('');  // Select the root folder ('' works)
                     notifyGalleryUpdate(); // call before normalizing paths for root directory.
                 } else {
                     folderPath = normalizeFolderPath(folderPath);
