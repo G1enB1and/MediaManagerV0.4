@@ -4,6 +4,7 @@ import { currentPage, totalPages, loadRootImages, updateGallery, renderPaginatio
 import { collapseAll, expandAll, toggleFilesOption, toggleToSublevel } from './fileTree.js';  // Import the missing functions
 
 let selectedFolders = new Set();  // Track the selected folders
+let multiSelectEnabled = false;   // Allow multi-select without holding Ctrl
 
 export function initializeEventListeners() {
     makeResizable();
@@ -46,9 +47,9 @@ function attachFileTreeClickListener() {
                 } else {
                     folderPath = normalizeFolderPath(folderPath);
 
-                    // Detect if Ctrl is pressed
-                    if (event.ctrlKey) {
-                        console.log('Ctrl+Click detected');  // Debug log
+                    // Detect if Ctrl is pressed or multi-select mode is enabled
+                    if (event.ctrlKey || multiSelectEnabled) {
+                        console.log('Multi-select');  // Debug log
                         // Handle multi-selection by adding/removing from selectedFolders
                         if (selectedFolders.has(folderPath)) {
                             selectedFolders.delete(folderPath);  // Unselect if already selected
@@ -86,6 +87,15 @@ function clearFolderSelection() {
     document.querySelectorAll('.selected-folder').forEach(li => {
         li.classList.remove('selected-folder');  // Remove the highlight
     });
+}
+
+// Toggle multi-select mode from the dropdown menu
+export function toggleMultiSelect() {
+    multiSelectEnabled = !multiSelectEnabled;
+    const link = document.getElementById('toggleMultiSelect');
+    if (link) {
+        link.textContent = multiSelectEnabled ? 'Multi-Select Off' : 'Multi-Select On';
+    }
 }
 
 // Notify events.js to update the gallery
