@@ -1,6 +1,6 @@
 //events.js
 import { makeResizable } from './resizer.js';
-import { currentPage, totalPages, loadRootImages, updateGallery } from './gallery.js';
+import { currentPage, totalPages, loadRootImages, updateGallery, renderPagination, setCurrentPage, setTotalPages, itemsPerPage } from './gallery.js';
 import { collapseAll, expandAll, toggleFilesOption, toggleToSublevel } from './fileTree.js';  // Import the missing functions
 
 let selectedFolders = new Set();  // Track the selected folders
@@ -116,8 +116,13 @@ function updateCurrentImagesJson(folderPaths) {
     .then(response => response.json())
     .then(data => {
         console.log('Updated current_images.json with images from folders:', data);
-        // Update the gallery with the new images
-        updateGallery(data, 1);  // Reset to page 1
+        // Reset pagination state
+        setCurrentPage(1);
+        const pages = Math.ceil(data.length / itemsPerPage);
+        setTotalPages(pages);
+        // Update the gallery with the new images and re-render pagination
+        updateGallery(data, 1);
+        renderPagination(pages);
     })
     .catch(error => {
         console.error('Error updating current_images.json:', error);

@@ -1,7 +1,15 @@
 // gallery.js
 export let currentPage = 1;
-const itemsPerPage = 60;
+export const itemsPerPage = 60;
 export let totalPages = 0;
+
+export function setCurrentPage(page) {
+    currentPage = page;
+}
+
+export function setTotalPages(pages) {
+    totalPages = pages;
+}
 
 export function loadRootImages() {
     fetch('/update-images-json?folder=Media')
